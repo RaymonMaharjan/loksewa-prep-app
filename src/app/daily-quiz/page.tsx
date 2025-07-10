@@ -33,7 +33,7 @@ const syllabusTopics = [
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 const NUM_QUESTIONS = 20;
-const QUIZ_COOLDOWN_MINUTES = 1; // Temporarily set to 1 minute for testing
+const QUIZ_COOLDOWN_MINUTES = 24 * 60; // 24 hours
 const LOCAL_STORAGE_KEY = 'loksewaDailyQuizLastTaken';
 
 export default function DailyQuizPage() {
@@ -67,8 +67,8 @@ export default function DailyQuizPage() {
     };
 
     checkQuizAvailability();
-    // Check every 5 seconds to update the countdown for testing
-    const interval = setInterval(checkQuizAvailability, 5000); 
+    // Re-check availability periodically in case the user leaves the tab open.
+    const interval = setInterval(checkQuizAvailability, 60000); 
     return () => clearInterval(interval);
   }, []);
 

@@ -1,0 +1,40 @@
+import * as React from 'react';
+
+export const LoksewaLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 80"
+    width="100"
+    height="80"
+    {...props}
+  >
+    <g transform="translate(0 -10)">
+      {/* Red Triangle */}
+      <path d="M 50,90 L 20,60 L 80,60 Z" fill="#D32F2F" />
+
+      {/* Chip Body */}
+      <rect x="25" y="10" width="50" height="50" rx="8" ry="8" fill="#2C3E50" />
+
+      {/* Mountain/Arrow inside chip */}
+      <path
+        d="M 40 45 L 50 30 L 60 45 L 55 40 Z"
+        fill="white"
+      />
+      
+      {/* Chip Legs - Top */}
+      <rect x="42" y="5" width="4" height="5" fill="#34495E" />
+      <rect x="50" y="5" width="4" height="5" fill="#34495E" />
+      <rect x="58" y="5" width="4" height="5" fill="#34495E" />
+
+      {/* Chip Legs - Left */}
+      <rect x="20" y="22" width="5" height="4" fill="#34495E" />
+      <rect x="20" y="34" width="5" height="4" fill="#34495E" />
+      <rect x="20" y="46" width="5" height="4" fill="#34495E" />
+      
+      {/* Chip Legs - Right */}
+      <rect x="75" y="22" width="5" height="4" fill="#34495E" />
+      <rect x="75" y="34" width="5" height="4" fill="#34495E" />
+      <rect x="75" y="46" width="5" height="4" fill="#34495E" />
+    </g>
+  </svg>
+);

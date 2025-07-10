@@ -2,9 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpenCheck, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useState } from 'react';
+import { LoksewaLogo } from '../icons/loksewa-logo';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -47,7 +48,7 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
         <div className="flex justify-center items-center mb-4">
-            <BookOpenCheck className="h-10 w-10 text-primary" />
+            <LoksewaLogo className="h-14 w-14 text-primary" />
         </div>
         <CardTitle className="text-2xl font-bold">Loksewa Prep</CardTitle>
         <CardDescription>Sign in to start your preparation journey.</CardDescription>

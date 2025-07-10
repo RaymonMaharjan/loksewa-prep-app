@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   BarChart2,
-  BookOpenCheck,
   Calendar,
   FileText,
   FlaskConical,
@@ -16,6 +15,7 @@ import {
   Wand,
   LogOut,
   Loader2,
+  Users,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -40,6 +40,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useAuth } from '@/contexts/auth-context';
+import { LoksewaLogo } from '../icons/loksewa-logo';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -48,6 +49,7 @@ const menuItems = [
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },
   { href: '/study-plan', label: 'Study Plan', icon: Wand },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
+  { href: '/content-management', label: 'Content Management', icon: Users },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -74,7 +76,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <BookOpenCheck className="w-8 h-8 text-primary" />
+            <LoksewaLogo className="w-8 h-8 text-primary" />
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">Loksewa Prep</h2>
             </div>

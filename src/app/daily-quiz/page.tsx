@@ -8,10 +8,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/generate-custom-test';
-import { Loader2, TimerIcon, Zap } from 'lucide-react';
+import { Loader2, TimerIcon, Zap, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { differenceInHours, formatDistanceToNow, addDays, startOfTomorrow } from 'date-fns';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -32,6 +33,8 @@ const syllabusTopics = [
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 const NUM_QUESTIONS = 20;
+const QUIZ_COOLDOWN_HOURS = 24;
+const LOCAL_STORAGE_KEY = 'loksewaDailyQuizLastTaken';
 
 export default function DailyQuizPage() {
   const [test, setTest] = useState<GenerateCustomTestOutput['questions'] | null>(null);
@@ -40,6 +43,34 @@ export default function DailyQuizPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [isQuizAvailable, setIsQuizAvailable] = useState(false);
+  const [nextQuizTime, setNextQuizTime] = useState('');
+
+  useEffect(() => {
+    const checkQuizAvailability = () => {
+        const lastTakenStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (lastTakenStr) {
+            const lastTakenDate = new Date(lastTakenStr);
+            const now = new Date();
+            const hoursSinceLastTaken = differenceInHours(now, lastTakenDate);
+
+            if (hoursSinceLastTaken < QUIZ_COOLDOWN_HOURS) {
+                setIsQuizAvailable(false);
+                const nextAvailableDate = addDays(startOfTomorrow(), 0);
+                setNextQuizTime(formatDistanceToNow(nextAvailableDate, { addSuffix: true }));
+            } else {
+                setIsQuizAvailable(true);
+            }
+        } else {
+            setIsQuizAvailable(true);
+        }
+    };
+
+    checkQuizAvailability();
+    // Also check every minute to update the countdown
+    const interval = setInterval(checkQuizAvailability, 60000); 
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!test || isSubmitted) return;
@@ -65,13 +96,15 @@ export default function DailyQuizPage() {
       const result = await generateCustomTest({ 
           topics: syllabusTopics, 
           numQuestions: NUM_QUESTIONS,
-          difficulty: 'medium', // Mix of difficulties for a daily quiz
+          difficulty: 'medium',
       });
       setTest(result.questions);
       setTimeLeft(result.questions.length * TIME_PER_QUESTION_SECONDS);
       setSelectedAnswers({});
       setIsSubmitted(false);
       setScore(0);
+      localStorage.setItem(LOCAL_STORAGE_KEY, new Date().toISOString());
+      setIsQuizAvailable(false); // Lock quiz after starting
     } catch (error) {
       console.error("Failed to generate test", error);
     } finally {
@@ -110,13 +143,18 @@ export default function DailyQuizPage() {
         <Card className="w-full max-w-lg text-center">
           <CardHeader>
             <div className="mx-auto bg-primary/10 p-3 rounded-full mb-4">
-              <Zap className="h-8 w-8 text-primary" />
+              {isQuizAvailable ? <Zap className="h-8 w-8 text-primary" /> : <Lock className="h-8 w-8 text-muted-foreground" />}
             </div>
             <CardTitle className="text-2xl">Daily Quiz</CardTitle>
-            <CardDescription>A 20-question quiz is generated for you daily from all topics. It's timed and includes negative marking.</CardDescription>
+            <CardDescription>
+                {isQuizAvailable 
+                    ? "A 20-question quiz is generated for you daily from all topics. It's timed and includes negative marking."
+                    : `You've completed today's quiz. The next one will be available ${nextQuizTime}.`
+                }
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
+            <Button size="lg" onClick={handleStartQuiz} disabled={isLoading || !isQuizAvailable}>
               {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Quiz'}
             </Button>
           </CardContent>
@@ -165,7 +203,7 @@ export default function DailyQuizPage() {
                 </div>
               </ScrollArea>
                <div className="mt-6 text-center">
-                  <Button onClick={handleStartQuiz}>Try Another Quiz</Button>
+                  <Button onClick={() => setTest(null)}>Back to Quiz Home</Button>
               </div>
           </CardContent>
       </Card>

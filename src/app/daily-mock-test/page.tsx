@@ -112,12 +112,12 @@ export default function DailyMockTestPage() {
             <div className="mx-auto bg-primary/10 p-3 rounded-full mb-4">
               <FileText className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-2xl">Daily Mock Test</CardTitle>
-            <CardDescription>A 50-question mock test generated daily from all topics. It's timed and includes negative marking to simulate exam conditions.</CardDescription>
+            <CardTitle className="text-2xl">Mock Test</CardTitle>
+            <CardDescription>A 50-question mock test generated from all topics. It's timed and includes negative marking to simulate exam conditions.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Mock Test'}
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Mock Test'}
             </Button>
           </CardContent>
         </Card>
@@ -176,7 +176,7 @@ export default function DailyMockTestPage() {
      <div className="max-w-3xl mx-auto">
         <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
             <div className="flex justify-between items-center mb-2">
-                <h1 className="text-2xl font-bold">Daily Mock Test</h1>
+                <h1 className="text-2xl font-bold">Mock Test</h1>
                 <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
                     <TimerIcon className="h-6 w-6" />
                     <span>{formatTime(timeLeft)}</span>

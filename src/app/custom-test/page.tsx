@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,9 +11,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/generate-custom-test';
-import { Loader2 } from 'lucide-react';
+import { Loader2, TimerIcon } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -21,93 +22,51 @@ const syllabus = [
     { 
         id: 'computer_fundamentals', 
         label: 'Computer Fundamentals',
-        subTopics: [
-            'Introduction to computer systems',
-            'Computer Hardware and Software',
-            'CPU: ALU, Registers, CU',
-            'Memory and Storage devices',
-            'Input and Output devices',
-            'Operating system and application programs',
-            'Computer virus and remedies',
-            'Word processor, Spreadsheet, PowerPoint',
-            'Computer system configuration',
-            'Basic troubleshooting',
-            'Fonts, Nepali Fonts, Unicode and Unicode Fonts',
-            'Using Unicode for Nepali documents',
-        ]
     },
     { 
         id: 'programming', 
         label: 'Procedural and Object Oriented Programming',
-        subTopics: [
-            'Concept of Procedural Programming', 'Programming with C', 'Keywords, Identifiers', 'Data types', 'Statements and Operators', 'Preprocessor Directives', 'Input/Output, Control statements, Loops', 'Procedure/Functions', 'Array, String and Pointer', 'Structure and Union', 'Files', 'Object Oriented Programming and Features', 'Objects and Classes', 'Operator/Function Overloading', 'Abstraction, Encapsulation, Inheritance, Polymorphism, Template', 'Exception handling'
-        ]
     },
     { 
         id: 'data_structures', 
         label: 'Data Structure and Algorithms',
-        subTopics: [
-            'Data structures and Abstract data types', 'Stack and Queue', 'Lists, Linked Lists, Queues, Trees, Binary Search-Trees', 'Recursion', 'Introductory Notions of algorithm design: Divide-and-Conquer, Dynamic Programming, Greedy Methods, Backtracking', 'Graph algorithms: Depth-first Search and Breadth-first Search, Shortest Path Problems, Minimum Spanning Trees, Directed Acyclic Graphs. Complexity Analysis of Algorithms, Worst and Average Case Analysis', 'Time and Space Analysis of Algorithms', 'Hashing', 'Sorting', 'Searching', 'Graphs, Graph Traversals'
-        ]
     },
     { 
         id: 'architecture', 
         label: 'Microprocessors and Computer Architecture',
-        subTopics: [
-            'Microprocessor and Bus System of Microprocessor Based System', 'Intel 8085 microprocessor architecture, programming and interfacing', 'Intel 8086 microprocessor architecture', 'Assembly Language Programming with 8086', 'Instruction Set, Instruction Format and Addressing Modes', 'Interrupt System in Microprocessors', 'Computer Organization and Computer Architecture', 'Instruction Cycle and Machine Cycle, Execution of an Instruction', 'CPU structure and function, Arithmetic and Logic Unit, Representation of data, Arithmetic operations', 'Control Unit, Hardwired and Microprogrammed Control Unit', 'Memory Devices, Classification and Hierarchies', 'Cache Memory and Cache Mapping, Multi-level Cache Memory', 'Von Neumann and Harvard architecture, RISC & CISC architecture', 'Input Output Organization: I/O programming, memory mapped I/O, basic interrupt system, DMA', 'Pipelining, Pipelining Hazards and Remedies', 'Multiprocessors and Multicore architecture'
-        ]
     },
     { 
         id: 'os', 
         label: 'Operating Systems',
-        subTopics: [
-            'Operating system and its functions', 'Types of operating systems', 'Basic components of the Operating Systems', 'Process and Threads, Process Management, Inter-Process Communication, Mutual Exclusion and Synchronization', 'Process Scheduling', 'Memory Management techniques', 'File System Management', 'I/O Management & Disk Allocation and Scheduling Methods', 'Deadlock', 'Security', 'Distributed Systems: Distributed Message passing, RPC, Client-server computing, Clusters', 'Common Operating Systems: Windows and Linux with Their typical features'
-        ]
     },
     { 
         id: 'dbms', 
         label: 'Database Management System',
-        subTopics: [
-            'Database Management System and its Applications', 'ER modeling', 'Relational Languages and Relational Model', 'Database Constraints and Normalization', 'Normalization: 1NF, 2NF, 3NF, BCNF, 4NF,5NF, DKNF', 'Architecture of DBMS: Client-server, Open Architectures, Transaction Processing, Multi-User & Concurrency, and Backup & Recovery Database.', 'Basic Concept of major RDBMS products: Oracle, Sybase, DB2, SQL Server and other Databases.', 'SQL queries, Views', 'Query Processing and Optimization', 'Database Storage, Indexing and Hashing', 'Transactions Management and Concurrency Control', 'Crash Recovery', 'Distributed Database Systems and Object-Oriented Database System', 'Concept of Data Warehousing'
-        ]
     },
     { 
         id: 'networks_security', 
         label: 'Computer Networks and Security',
-        subTopics: [
-            'Computer Networks, Types of networks and Applications', 'Layered network architecture, OSI and TCP/IP model', 'Physical layer, Transmission media, Switching and Multiplexing, Data Encoding Techniques', 'Data Link Layer and its services, MAC Address, Multiple access protocols, CSMA/CD, CSMA/CA', 'Network Devices: Repeaters, Hubs, Bridges, Switches, Routers, Gateways and their functions', 'Network Layer and its services, IP addressing, Public and Private IP address, Network Layer Protocols, Routing Principles, Classifications of Routing Algorithms, Routing Protocols, IPv4, IPv6', 'IP address management, Autonomous system, Multi-homing', 'Transport Layer and its functions, Port number, TCP and UDP Protocols', 'Application Layer protocols and functions, HTTP & HTTPS, FTP, DNS, SMTP, POP, IMAP Protocols', 'Distributed system, Clusters, Network Security, Disaster Recovery, Data Storage Techniques: Clustering, NAS, SAN', 'Network Security and its Importance, Passive and Active Attacks,', 'Cryptography, Traditional Ciphers', 'Symmetric Encryption, DES and AES', 'Asymmetric encryption and its importance, Diffie and Hellman algorithm, RSA Algorithm', 'Cryptographic Hash Functions, Message Authentication Code, Digital Signature', 'Securing Wireless LANs, VPN, Firewalls, IDS and IPS', 'Disaster Recovery: Need for Disaster Recovery, Disaster Recovery plan, Data backup, Fault Tolerance', 'Advanced Data Storage Techniques: Enterprise Data Storage, Clustering, Network Attached Storage, Storage Area Networks', 'Network Troubleshooting: Using Systematic Approach to Troubleshooting', 'Network Support Tools: Utilities, Network Baseline', 'Network Access Points (NAP), Common Network Component, Common Peripheral Ports'
-        ]
     },
     { 
         id: 'software_engineering', 
         label: 'Software Engineering',
-        subTopics: [
-            'Software Engineering and its importance', 'Software Process models', 'Requirement engineering', 'System models', 'Architectural design', 'Software Reuse', 'Software Testing, Verification and Validation', 'Software Estimation', 'Quality Management', 'Configuration Management', 'Software Project Management'
-        ]
     },
     { 
         id: 'web_technologies', 
         label: 'MIS and Web Technologies',
-        subTopics: [
-            'Information Systems and Decision making', 'Basics of Website Design, HTML and Content Management System', 'JavaScript, XML, PHP', 'Client server architecture', 'Managing a web server, Hosting a website in a server and via cloud service providers', 'Multimedia systems', 'Knowledge Management, The strategic use of Information Technology.', 'Work Process Redesign (Reengineering) with Information Technology, Enterprise Resources Planning Systems, Information Systems Security, Information Privacy, and Global Information Technology issues.', 'Software Supported Demonstrations including advanced Spreadsheet topics, Software Component Based Systems (CBSE),'
-        ]
     },
     { 
         id: 'it_trends', 
         label: 'Recent IT Trends and Terminology',
-        subTopics: [
-            'Machine Learning and Artificial Intelligence', 'Computer Vision', 'Internet of Things (IoT)', 'BigData', 'Block Chain', 'E-Governance, E-commerce', 'Data Center and its management', 'Cloud/Grid/Cluster/Edge computing', 'Video conferencing/Online meeting/Online class'
-        ]
     },
     { 
         id: 'legal', 
         label: 'Constitution of Nepal, Acts, Rules and IT Policy',
-        subTopics: [
-            'The Constitution of Nepal', 'History of IT in Nepal', 'Copyright Act, 2059 B.S.', 'Electronic Transaction Act, 2063 B.S.', 'IT Policy of Nepal, 2072 B.S.', 'Digital Nepal Framework 2076', 'Licensing Issues', 'Basic concept of Public Procurement Act, Public Procurement Rule, Procurement Process, PPMO, E-bidding'
-        ]
     },
 ];
 
+const TIME_PER_QUESTION_SECONDS = 54; // 90 minutes for 100 questions
+const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 
 export default function CustomTestPage() {
     const { toast } = useToast();
@@ -116,6 +75,24 @@ export default function CustomTestPage() {
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [score, setScore] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(0);
+
+    useEffect(() => {
+        if (!generatedTest || isSubmitted) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => {
+                if (prevTime <= 1) {
+                    clearInterval(timer);
+                    handleSubmitTest();
+                    return 0;
+                }
+                return prevTime - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [generatedTest, isSubmitted]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -154,6 +131,7 @@ export default function CustomTestPage() {
                 numQuestions,
             });
             setGeneratedTest(result);
+            setTimeLeft(result.questions.length * TIME_PER_QUESTION_SECONDS);
         } catch (error) {
             console.error("Failed to generate custom test", error);
             toast({
@@ -171,13 +149,18 @@ export default function CustomTestPage() {
     };
     
     const handleSubmitTest = () => {
+        if (!generatedTest) return;
         let finalScore = 0;
-        generatedTest?.questions.forEach((q, index) => {
-          if (selectedAnswers[index] === q.correctAnswer) {
-            finalScore++;
-          }
+        generatedTest.questions.forEach((q, index) => {
+            if (selectedAnswers[index]) {
+                if (selectedAnswers[index] === q.correctAnswer) {
+                    finalScore++;
+                } else {
+                    finalScore -= NEGATIVE_MARKING_PER_QUESTION;
+                }
+            }
         });
-        setScore(finalScore);
+        setScore(Math.max(0, finalScore)); // Ensure score doesn't go below 0
         setIsSubmitted(true);
     };
 
@@ -187,6 +170,12 @@ export default function CustomTestPage() {
         setScore(0);
         setSelectedAnswers({});
     }
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
 
     if (isLoading) {
         return (
@@ -207,18 +196,24 @@ export default function CustomTestPage() {
                     <Card className="w-full max-w-3xl mx-auto">
                         <CardHeader className="text-center">
                             <CardTitle className="text-2xl md:text-3xl">Test Results</CardTitle>
-                            <CardDescription>You scored {score} out of {generatedTest.questions.length}!</CardDescription>
+                            <CardDescription>Your final score is {score.toFixed(2)} out of {generatedTest.questions.length}!</CardDescription>
                         </CardHeader>
                         <CardContent>
+                            <Alert className="mb-6">
+                              <AlertTitle>Scoring Details</AlertTitle>
+                              <AlertDescription>
+                                Correct answers are worth 1 point. Incorrect answers have a negative marking of {NEGATIVE_MARKING_PER_QUESTION} points.
+                              </AlertDescription>
+                            </Alert>
                             <div className="space-y-4">
                                 {generatedTest.questions.map((q, index) => {
                                     const userAnswer = selectedAnswers[index];
                                     const isCorrect = userAnswer === q.correctAnswer;
                                     return (
-                                        <div key={index} className={cn("p-4 rounded-lg border", isCorrect ? "border-green-500 bg-green-500/10" : "border-red-500 bg-red-500/10")}>
+                                        <div key={index} className={cn("p-4 rounded-lg border", userAnswer ? (isCorrect ? "border-green-500 bg-green-500/10" : "border-red-500 bg-red-500/10") : "bg-muted/50")}>
                                             <p className="font-semibold">{index + 1}. {q.question}</p>
-                                            <p className="text-sm mt-2">Your answer: <span className={cn("font-medium", isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400")}>{userAnswer || "Not answered"}</span></p>
-                                            {!isCorrect && <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>}
+                                            <p className="text-sm mt-2">Your answer: <span className={cn("font-medium", userAnswer ? (isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400") : "text-muted-foreground")}>{userAnswer || "Not answered"}</span></p>
+                                            {!isCorrect && userAnswer && <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>}
                                         </div>
                                     )
                                 })}
@@ -235,7 +230,21 @@ export default function CustomTestPage() {
         return (
             <DashboardLayout>
                 <div className="max-w-3xl mx-auto space-y-6">
-                    <h1 className="text-2xl font-bold">Your Custom Test</h1>
+                    <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4">
+                        <div className="flex justify-between items-center mb-2">
+                             <h1 className="text-2xl font-bold">Your Custom Test</h1>
+                             <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
+                                <TimerIcon className="h-6 w-6" />
+                                <span>{formatTime(timeLeft)}</span>
+                             </div>
+                        </div>
+                        <Alert>
+                           <AlertDescription>
+                            This test is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Good luck!
+                           </AlertDescription>
+                        </Alert>
+                    </div>
+
                     {generatedTest.questions.map((q, index) => (
                         <Card key={index}>
                             <CardHeader>
@@ -254,7 +263,7 @@ export default function CustomTestPage() {
                             </CardContent>
                         </Card>
                     ))}
-                    <Button onClick={handleSubmitTest} className="w-full" disabled={Object.keys(selectedAnswers).length !== generatedTest.questions.length}>Submit Test</Button>
+                    <Button onClick={handleSubmitTest} className="w-full">Submit Test</Button>
                 </div>
             </DashboardLayout>
         )

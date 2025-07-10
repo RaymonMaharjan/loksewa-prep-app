@@ -11,6 +11,8 @@ import {
   FileText,
   FlaskConical,
   LayoutDashboard,
+  Settings,
+  User,
   Wand,
 } from 'lucide-react';
 import {
@@ -65,7 +67,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href)}
+                  isActive={pathname === item.href}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>
@@ -105,8 +107,16 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                 <Link href="/profile" className='flex items-center gap-2 cursor-pointer'>
+                  <User className="h-4 w-4" /> Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/settings" className='flex items-center gap-2 cursor-pointer'>
+                  <Settings className="h-4 w-4" /> Settings
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/">Log out</Link>

@@ -46,6 +46,15 @@ export function useLoksewa() {
       return updatedHistory;
     });
   };
+
+  const clearHistory = () => {
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      setHistory([]);
+    } catch (error) {
+      console.error("Failed to clear test history from localStorage", error);
+    }
+  };
   
   const getRecentScores = (count = 5) => {
     return history
@@ -104,5 +113,5 @@ export function useLoksewa() {
   };
 
 
-  return { history, addTestResult, getRecentScores, getTopicPerformance, getScoresOverTime };
+  return { history, addTestResult, getRecentScores, getTopicPerformance, getScoresOverTime, clearHistory };
 }

@@ -1,11 +1,20 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download, Share, MoreVertical } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoksewaLogo } from '../icons/loksewa-logo';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -34,14 +43,49 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export function LoginForm() {
   const { signInWithGoogle, loading } = useAuth();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as BeforeInstallPromptEvent);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
 
   const handleLogin = async () => {
     setIsLoggingIn(true);
     await signInWithGoogle();
     setIsLoggingIn(false);
+  };
+  
+  const handleInstallClick = async () => {
+    if (!installPrompt) return;
+    await installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
+    }
+    setInstallPrompt(null);
   };
 
   return (
@@ -63,6 +107,45 @@ export function LoginForm() {
             )}
             Sign in with Google
           </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="secondary" className="w-full">
+                    <Download className="mr-2 h-4 w-4" /> Install App
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                <DialogTitle>Install Loksewa Prep App</DialogTitle>
+                <DialogDescription>
+                    Follow the instructions for your device to install the app for the best experience.
+                </DialogDescription>
+                </DialogHeader>
+                <div className='space-y-4'>
+                    <div>
+                        <h3 className='font-semibold mb-2'>On Android (Chrome)</h3>
+                        <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
+                            <li>Tap the <MoreVertical className='inline h-4 w-4' /> menu button.</li>
+                            <li>Select <strong>Install app</strong> or <strong>Add to Home Screen</strong>.</li>
+                            <li>Follow the on-screen instructions.</li>
+                        </ol>
+                    </div>
+                     <div>
+                        <h3 className='font-semibold mb-2'>On iOS (Safari)</h3>
+                        <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
+                            <li>Tap the <Share className='inline h-4 w-4' /> Share button.</li>
+                            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+                            <li>Confirm by tapping <strong>Add</strong>.</li>
+                        </ol>
+                    </div>
+                    {installPrompt && (
+                         <Button onClick={handleInstallClick} className='w-full'>
+                            <Download className="mr-2 h-4 w-4" /> Install Now
+                        </Button>
+                    )}
+                </div>
+            </DialogContent>
+           </Dialog>
         </div>
       </CardContent>
     </Card>

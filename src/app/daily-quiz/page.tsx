@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
@@ -24,7 +25,7 @@ export default function DailyQuizPage() {
     setIsLoading(true);
     setQuiz(null);
     try {
-      const result = await generateDailyQuiz({ topic: 'General Knowledge', numberOfQuestions: 5 });
+      const result = await generateDailyQuiz({ topic: 'Computer Science', numberOfQuestions: 5 });
       setQuiz(result.quiz);
       setCurrentQuestionIndex(0);
       setSelectedAnswers({});
@@ -147,3 +148,5 @@ export default function DailyQuizPage() {
     </DashboardLayout>
   );
 }
+
+    

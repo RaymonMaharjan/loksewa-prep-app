@@ -218,9 +218,7 @@ User's Selected Topics:
 Difficulty: {{difficulty}}
 Number of Questions: {{numQuestions}}
 
-Ensure that the questions are relevant to the specified topics and difficulty level.
-
-Output the questions in JSON format. The "topic" field for each question should be the main topic it relates to (e.g., "Computer Fundamentals").
+VERY IMPORTANT: You must output the questions in a valid JSON format that strictly adheres to the provided schema. For every single question in the array, ensure that all fields ('question', 'options', 'correctAnswer', 'topic', 'difficulty') are present and correctly populated. Do not return incomplete objects. The "topic" field for each question should be the main topic it relates to (e.g., "Computer Fundamentals").
 `,
 });
 

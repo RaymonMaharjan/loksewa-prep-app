@@ -192,7 +192,7 @@ export default function CustomTestPage() {
               <div className="space-y-2">
                 <Label>Topics (Select at least one)</Label>
                 <ScrollArea className="h-72 w-full rounded-md border">
-                  <div className="p-4 grid grid-cols-1 gap-4">
+                  <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     {topics.map((topic) => (
                       <div key={topic.id} className="flex items-start space-x-2">
                         <Checkbox id={topic.id} name={topic.id} />

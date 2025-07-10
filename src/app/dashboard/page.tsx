@@ -51,10 +51,10 @@ export default function DashboardPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Welcome back!</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Welcome back!</h1>
           <p className="text-muted-foreground">Here's a quick overview of your prep status.</p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {quickLinks.map((link) => (
             <Card 
               key={link.title} 

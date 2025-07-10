@@ -106,7 +106,7 @@ export default function CustomTestPage() {
     if (isLoading) {
         return (
             <DashboardLayout>
-                <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center p-4">
                     <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
                     <h2 className="text-2xl font-semibold mb-2">Generating Your Test</h2>
                     <p className="text-muted-foreground">The AI is hard at work creating your personalized questions. Please wait a moment.</p>
@@ -121,7 +121,7 @@ export default function CustomTestPage() {
                 <DashboardLayout>
                     <Card className="w-full max-w-3xl mx-auto">
                         <CardHeader className="text-center">
-                            <CardTitle className="text-3xl">Test Results</CardTitle>
+                            <CardTitle className="text-2xl md:text-3xl">Test Results</CardTitle>
                             <CardDescription>You scored {score} out of {generatedTest.questions.length}!</CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -155,14 +155,14 @@ export default function CustomTestPage() {
                         <Card key={index}>
                             <CardHeader>
                                 <CardTitle>Question {index + 1}</CardTitle>
-                                <CardDescription className="text-lg pt-2">{q.question}</CardDescription>
+                                <CardDescription className="text-base md:text-lg pt-2">{q.question}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <RadioGroup value={selectedAnswers[index]} onValueChange={(value) => handleAnswerSelect(index, value)} className="space-y-4">
                                     {q.options.map((option, i) => (
                                         <div key={i} className="flex items-center space-x-2 p-3 rounded-md border has-[:checked]:bg-primary/10 has-[:checked]:border-primary transition-colors">
                                         <RadioGroupItem value={option} id={`q${index}-option-${i}`} />
-                                        <Label htmlFor={`q${index}-option-${i}`} className="text-base flex-1 cursor-pointer">{option}</Label>
+                                        <Label htmlFor={`q${index}-option-${i}`} className="text-sm md:text-base flex-1 cursor-pointer">{option}</Label>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -179,7 +179,7 @@ export default function CustomTestPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Custom Test Generator</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Custom Test Generator</h1>
           <p className="text-muted-foreground">Create your own test by selecting topics and difficulty.</p>
         </div>
         <Card className="max-w-2xl mx-auto">
@@ -192,7 +192,7 @@ export default function CustomTestPage() {
               <div className="space-y-2">
                 <Label>Topics (Select at least one)</Label>
                 <ScrollArea className="h-72 w-full rounded-md border">
-                  <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 grid grid-cols-1 gap-4">
                     {topics.map((topic) => (
                       <div key={topic.id} className="flex items-start space-x-2">
                         <Checkbox id={topic.id} name={topic.id} />

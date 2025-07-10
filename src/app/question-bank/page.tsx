@@ -20,16 +20,16 @@ const questions = [
 
 const topics = [
     { value: 'computer_fundamentals', label: 'Computer Fundamentals' },
-    { value: 'programming', label: 'Programming' },
-    { value: 'data_structures', label: 'Data Structures' },
-    { value: 'architecture', label: 'Architecture' },
+    { value: 'programming', label: 'Procedural and Object Oriented Programming' },
+    { value: 'data_structures', label: 'Data Structure and Algorithms' },
+    { value: 'architecture', label: 'Microprocessors and Computer Architecture' },
     { value: 'os', label: 'Operating Systems' },
-    { value: 'dbms', label: 'DBMS' },
-    { value: 'networks_security', label: 'Networks & Security' },
+    { value: 'dbms', label: 'Database Management System' },
+    { value: 'networks_security', label: 'Computer Networks and Security' },
     { value: 'software_engineering', label: 'Software Engineering' },
-    { value: 'web_technologies', label: 'Web Technologies' },
-    { value: 'it_trends', label: 'IT Trends' },
-    { value: 'legal', label: 'Legal' },
+    { value: 'web_technologies', label: 'MIS and Web Technologies' },
+    { value: 'it_trends', label: 'Recent IT Trends and Terminology' },
+    { value: 'legal', label: 'Constitution, Acts, Rules and IT Policy' },
 ];
 
 export default function QuestionBankPage() {
@@ -37,7 +37,7 @@ export default function QuestionBankPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Question Bank</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Question Bank</h1>
           <p className="text-muted-foreground">Explore our vast collection of questions.</p>
         </div>
         <div className="flex flex-col md:flex-row gap-4">
@@ -64,32 +64,34 @@ export default function QuestionBankPage() {
           </Select>
         </div>
         <Card>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[60%]">Question</TableHead>
-                <TableHead>Topic</TableHead>
-                <TableHead>Difficulty</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {questions.map((q) => (
-                <TableRow key={q.id}>
-                  <TableCell className="font-medium">{q.question}</TableCell>
-                  <TableCell><Badge variant="outline">{q.topic}</Badge></TableCell>
-                  <TableCell>
-                    <Badge variant={q.difficulty === 'Easy' ? 'secondary' : q.difficulty === 'Hard' ? 'destructive' : 'default'} className="capitalize">{q.difficulty}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" aria-label="Bookmark question">
-                      <Bookmark className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50%] md:w-[60%]">Question</TableHead>
+                  <TableHead>Topic</TableHead>
+                  <TableHead>Difficulty</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {questions.map((q) => (
+                  <TableRow key={q.id}>
+                    <TableCell className="font-medium">{q.question}</TableCell>
+                    <TableCell><Badge variant="outline" className="whitespace-nowrap">{q.topic}</Badge></TableCell>
+                    <TableCell>
+                      <Badge variant={q.difficulty === 'Easy' ? 'secondary' : q.difficulty === 'Hard' ? 'destructive' : 'default'} className="capitalize">{q.difficulty}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" aria-label="Bookmark question">
+                        <Bookmark className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
       </div>
     </DashboardLayout>

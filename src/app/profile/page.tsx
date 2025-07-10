@@ -1,11 +1,18 @@
+
 'use client';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLoksewa } from '@/hooks/use-loksewa';
+import { useAuth } from '@/contexts/auth-context';
 
 export default function ProfilePage() {
     const { history } = useLoksewa();
+    const { user } = useAuth();
+
+  if (!user) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <DashboardLayout>
@@ -17,12 +24,12 @@ export default function ProfilePage() {
             <Card>
                 <CardHeader className="flex flex-col items-center text-center space-y-4">
                     <Avatar className="h-24 w-24">
-                        <AvatarImage src="https://placehold.co/100x100.png" data-ai-hint="profile avatar" alt="User" />
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarImage src={user.photoURL || ''} data-ai-hint="profile avatar" alt={user.displayName || 'User'} />
+                        <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
-                        <CardTitle className="text-2xl">User</CardTitle>
-                        <CardDescription>user@email.com</CardDescription>
+                        <CardTitle className="text-2xl">{user.displayName}</CardTitle>
+                        <CardDescription>{user.email}</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -37,12 +44,4 @@ export default function ProfilePage() {
                         </div>
                          <div className="p-4 bg-muted rounded-lg">
                             <p className="text-sm text-muted-foreground">Mock Tests Done</p>
-                            <p className="text-2xl font-bold">{history.filter(t => t.type === 'mock-test').length}</p>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    </DashboardLayout>
-  );
-}
+                            <p className="text-2xl font-bold">{history.filter(t => t.type

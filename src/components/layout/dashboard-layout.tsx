@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   BarChart2,
   BookOpenCheck,
@@ -14,6 +14,8 @@ import {
   Settings,
   User,
   Wand,
+  LogOut,
+  Loader2,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -37,6 +39,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '../ui/button';
+import { useAuth } from '@/contexts/auth-context';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -49,6 +52,22 @@ const menuItems = [
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading, signOut } = useAuth();
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push('/');
+    }
+  }, [user, loading, router]);
+  
+  if (loading || !user) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
@@ -86,12 +105,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                  <div className="flex justify-between items-center w-full">
                     <div className="flex gap-2 items-center">
                        <Avatar className="h-8 w-8">
-                         <AvatarImage src="https://placehold.co/100x100.png" data-ai-hint="profile avatar" alt="User" />
-                         <AvatarFallback>U</AvatarFallback>
+                         <AvatarImage src={user.photoURL || ''} data-ai-hint="profile avatar" alt={user.displayName || 'User'} />
+                         <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
                        </Avatar>
                        <div className="flex flex-col items-start group-data-[collapsible=icon]:hidden">
-                         <span className="text-sm font-medium">User</span>
-                         <span className="text-xs text-muted-foreground">user@email.com</span>
+                         <span className="text-sm font-medium">{user.displayName}</span>
+                         <span className="text-xs text-muted-foreground">{user.email}</span>
                        </div>
                     </div>
                   </div>
@@ -100,9 +119,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <DropdownMenuContent className="w-56 mb-2" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">User</p>
+                  <p className="text-sm font-medium leading-none">{user.displayName}</p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    user@email.com
+                    {user.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
@@ -118,8 +137,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/">Log out</Link>
+              <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer">
+                <LogOut className="h-4 w-4" /> Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

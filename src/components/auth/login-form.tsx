@@ -1,9 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpenCheck } from 'lucide-react';
+import { BookOpenCheck, Loader2 } from 'lucide-react';
+import { useAuth } from '@/contexts/auth-context';
+import { useState } from 'react';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -33,12 +34,13 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export function LoginForm() {
-  const router = useRouter();
+  const { signInWithGoogle, loading } = useAuth();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const handleLogin = () => {
-    // In a real app, you would handle Google Sign-In here.
-    // For this scaffold, we'll just navigate to the dashboard.
-    router.push('/dashboard');
+  const handleLogin = async () => {
+    setIsLoggingIn(true);
+    await signInWithGoogle();
+    setIsLoggingIn(false);
   };
 
   return (
@@ -52,8 +54,12 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <Button variant="outline" className="w-full" onClick={handleLogin}>
-            <GoogleIcon className="mr-2" />
+          <Button variant="outline" className="w-full" onClick={handleLogin} disabled={loading || isLoggingIn}>
+            {loading || isLoggingIn ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <GoogleIcon className="mr-2" />
+            )}
             Sign in with Google
           </Button>
         </div>

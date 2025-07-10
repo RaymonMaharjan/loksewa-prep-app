@@ -51,7 +51,7 @@ export default function ContentManagementPage() {
               <CardHeader>
                 <CardTitle>Schedule a Daily Quiz</CardTitle>
                 <CardDescription>Describe when and what kind of quiz you want to schedule.</CardDescription>
-              </Header>
+              </CardHeader>
               <CardContent>
                 <form onSubmit={handleContentSubmit} className="space-y-4">
                   <div>

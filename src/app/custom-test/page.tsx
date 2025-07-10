@@ -10,11 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/generate-custom-test';
+import { generateCustomTest, type GenerateCustomTestOutput, type GenerateCustomTestInput } from '@/ai/flows/generate-custom-test';
 import { Loader2, TimerIcon } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useLoksewa } from '@/hooks/use-loksewa';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -72,10 +73,12 @@ export default function CustomTestPage() {
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
     const [generatedTest, setGeneratedTest] = useState<GenerateCustomTestOutput | null>(null);
+    const [testConfig, setTestConfig] = useState<GenerateCustomTestInput | null>(null);
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
+    const { addTestResult } = useLoksewa();
 
     useEffect(() => {
         if (!generatedTest || isSubmitted) return;
@@ -124,12 +127,15 @@ export default function CustomTestPage() {
             return;
         }
 
+        const currentTestConfig: GenerateCustomTestInput = {
+            topics: selectedTopicLabels,
+            difficulty,
+            numQuestions,
+        };
+        setTestConfig(currentTestConfig);
+
         try {
-            const result = await generateCustomTest({
-                topics: selectedTopicLabels,
-                difficulty,
-                numQuestions,
-            });
+            const result = await generateCustomTest(currentTestConfig);
             setGeneratedTest(result);
             setTimeLeft(result.questions.length * TIME_PER_QUESTION_SECONDS);
         } catch (error) {
@@ -149,7 +155,7 @@ export default function CustomTestPage() {
     };
     
     const handleSubmitTest = () => {
-        if (!generatedTest) return;
+        if (!generatedTest || !testConfig) return;
         let finalScore = 0;
         generatedTest.questions.forEach((q, index) => {
             if (selectedAnswers[index]) {
@@ -160,8 +166,16 @@ export default function CustomTestPage() {
                 }
             }
         });
-        setScore(Math.max(0, finalScore)); // Ensure score doesn't go below 0
+        const finalClampedScore = Math.max(0, finalScore);
+        setScore(finalClampedScore); 
         setIsSubmitted(true);
+
+        addTestResult({
+            score: finalClampedScore,
+            totalQuestions: generatedTest.questions.length,
+            type: 'custom-test',
+            topics: testConfig.topics,
+        })
     };
 
     const handleTryAgain = () => {
@@ -169,6 +183,7 @@ export default function CustomTestPage() {
         setIsSubmitted(false);
         setScore(0);
         setSelectedAnswers({});
+        setTestConfig(null);
     }
 
     const formatTime = (seconds: number) => {
@@ -209,19 +224,22 @@ export default function CustomTestPage() {
                                 Correct answers are worth 1 point. Incorrect answers have a negative marking of {NEGATIVE_MARKING_PER_QUESTION} points.
                               </AlertDescription>
                             </Alert>
-                            <div className="space-y-4">
-                                {generatedTest.questions.map((q, index) => {
-                                    const userAnswer = selectedAnswers[index];
-                                    const isCorrect = userAnswer === q.correctAnswer;
-                                    return (
-                                        <div key={index} className={cn("p-4 rounded-lg border", userAnswer ? (isCorrect ? "border-green-500 bg-green-500/10" : "border-red-500 bg-red-500/10") : "bg-muted/50")}>
-                                            <p className="font-semibold">{index + 1}. {q.question}</p>
-                                            <p className="text-sm mt-2">Your answer: <span className={cn("font-medium", userAnswer ? (isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400") : "text-muted-foreground")}>{userAnswer || "Not answered"}</span></p>
-                                            {!isCorrect && userAnswer && <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>}
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                            <ScrollArea className="h-96">
+                                <div className="space-y-4 pr-4">
+                                    {generatedTest.questions.map((q, index) => {
+                                        const userAnswer = selectedAnswers[index];
+                                        const isCorrect = userAnswer === q.correctAnswer;
+                                        return (
+                                            <div key={index} className={cn("p-4 rounded-lg border", userAnswer ? (isCorrect ? "border-green-500 bg-green-500/10" : "border-red-500 bg-red-500/10") : "bg-muted/50")}>
+                                                <p className="font-semibold">{index + 1}. {q.question}</p>
+                                                <p className="text-sm mt-2">Your answer: <span className={cn("font-medium", userAnswer ? (isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400") : "text-muted-foreground")}>{userAnswer || "Not answered"}</span></p>
+                                                {userAnswer && !isCorrect && <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>}
+                                                {userAnswer && isCorrect && <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </ScrollArea>
                             <div className="mt-6 text-center">
                                 <Button onClick={handleTryAgain}>Create Another Test</Button>
                             </div>

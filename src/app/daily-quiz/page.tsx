@@ -12,7 +12,7 @@ import { Loader2, TimerIcon, Zap, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { differenceInHours, formatDistanceToNow, addDays, startOfTomorrow } from 'date-fns';
+import { differenceInMinutes, formatDistanceToNow, addMinutes } from 'date-fns';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -33,7 +33,7 @@ const syllabusTopics = [
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 const NUM_QUESTIONS = 20;
-const QUIZ_COOLDOWN_HOURS = 24;
+const QUIZ_COOLDOWN_MINUTES = 1; // Temporarily set to 1 minute for testing
 const LOCAL_STORAGE_KEY = 'loksewaDailyQuizLastTaken';
 
 export default function DailyQuizPage() {
@@ -52,11 +52,11 @@ export default function DailyQuizPage() {
         if (lastTakenStr) {
             const lastTakenDate = new Date(lastTakenStr);
             const now = new Date();
-            const hoursSinceLastTaken = differenceInHours(now, lastTakenDate);
+            const minutesSinceLastTaken = differenceInMinutes(now, lastTakenDate);
 
-            if (hoursSinceLastTaken < QUIZ_COOLDOWN_HOURS) {
+            if (minutesSinceLastTaken < QUIZ_COOLDOWN_MINUTES) {
                 setIsQuizAvailable(false);
-                const nextAvailableDate = addDays(startOfTomorrow(), 0);
+                const nextAvailableDate = addMinutes(lastTakenDate, QUIZ_COOLDOWN_MINUTES);
                 setNextQuizTime(formatDistanceToNow(nextAvailableDate, { addSuffix: true }));
             } else {
                 setIsQuizAvailable(true);
@@ -67,8 +67,8 @@ export default function DailyQuizPage() {
     };
 
     checkQuizAvailability();
-    // Also check every minute to update the countdown
-    const interval = setInterval(checkQuizAvailability, 60000); 
+    // Check every 5 seconds to update the countdown for testing
+    const interval = setInterval(checkQuizAvailability, 5000); 
     return () => clearInterval(interval);
   }, []);
 

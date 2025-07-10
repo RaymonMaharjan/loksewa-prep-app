@@ -8,6 +8,7 @@ import {
   BarChart2,
   BookOpenCheck,
   Calendar,
+  FileText,
   FlaskConical,
   LayoutDashboard,
   List,
@@ -38,6 +39,7 @@ import { Button } from '../ui/button';
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/daily-quiz', label: 'Daily Quiz', icon: Calendar },
+  { href: '/daily-mock-test', label: 'Daily Mock Test', icon: FileText },
   { href: '/question-bank', label: 'Question Bank', icon: List },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },

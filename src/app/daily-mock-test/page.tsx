@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/generate-custom-test';
-import { Loader2, TimerIcon, Zap } from 'lucide-react';
+import { Loader2, TimerIcon, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -31,9 +31,9 @@ const syllabusTopics = [
 
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
-const NUM_QUESTIONS = 20;
+const NUM_QUESTIONS = 50;
 
-export default function DailyQuizPage() {
+export default function DailyMockTestPage() {
   const [test, setTest] = useState<GenerateCustomTestOutput['questions'] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
@@ -65,7 +65,7 @@ export default function DailyQuizPage() {
       const result = await generateCustomTest({ 
           topics: syllabusTopics, 
           numQuestions: NUM_QUESTIONS,
-          difficulty: 'medium', // Mix of difficulties for a daily quiz
+          difficulty: 'hard',
       });
       setTest(result.questions);
       setTimeLeft(result.questions.length * TIME_PER_QUESTION_SECONDS);
@@ -110,14 +110,14 @@ export default function DailyQuizPage() {
         <Card className="w-full max-w-lg text-center">
           <CardHeader>
             <div className="mx-auto bg-primary/10 p-3 rounded-full mb-4">
-              <Zap className="h-8 w-8 text-primary" />
+              <FileText className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-2xl">Daily Quiz</CardTitle>
-            <CardDescription>A 20-question quiz is generated for you daily from all topics. It's timed and includes negative marking.</CardDescription>
+            <CardTitle className="text-2xl">Daily Mock Test</CardTitle>
+            <CardDescription>A 50-question mock test generated daily from all topics. It's timed and includes negative marking to simulate exam conditions.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Quiz'}
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Mock Test'}
             </Button>
           </CardContent>
         </Card>
@@ -127,18 +127,18 @@ export default function DailyQuizPage() {
   const renderLoadingState = () => (
     <div className="flex flex-col items-center justify-center h-full text-center p-4">
       <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-      <h2 className="text-2xl font-semibold mb-2">Preparing Your Quiz</h2>
-      <p className="text-muted-foreground">The AI is generating 20 unique questions for you. This may take a moment.</p>
+      <h2 className="text-2xl font-semibold mb-2">Preparing Your Mock Test</h2>
+      <p className="text-muted-foreground">The AI is generating 50 unique questions for you. This may take a moment.</p>
     </div>
   )
 
   const renderResultsState = () => (
       <Card className="w-full max-w-3xl mx-auto">
           <CardHeader className="text-center">
-              <CardTitle className="text-3xl">Quiz Results</CardTitle>
+              <CardTitle className="text-3xl">Mock Test Results</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-              <div className="text-center">
+               <div className="text-center">
                   <p className="text-muted-foreground mb-2">Your Final Score</p>
                   <p className="text-5xl md:text-6xl font-bold text-primary">{score.toFixed(2)}</p>
                   <p className="text-muted-foreground mt-1">out of {test?.length} total marks</p>
@@ -165,7 +165,7 @@ export default function DailyQuizPage() {
                 </div>
               </ScrollArea>
                <div className="mt-6 text-center">
-                  <Button onClick={handleStartQuiz}>Try Another Quiz</Button>
+                  <Button onClick={handleStartQuiz}>Try Another Mock Test</Button>
               </div>
           </CardContent>
       </Card>
@@ -176,7 +176,7 @@ export default function DailyQuizPage() {
      <div className="max-w-3xl mx-auto">
         <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
             <div className="flex justify-between items-center mb-2">
-                <h1 className="text-2xl font-bold">Daily Quiz</h1>
+                <h1 className="text-2xl font-bold">Daily Mock Test</h1>
                 <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
                     <TimerIcon className="h-6 w-6" />
                     <span>{formatTime(timeLeft)}</span>
@@ -210,7 +210,7 @@ export default function DailyQuizPage() {
         ))}
 
         <div className="flex justify-end mt-6">
-            <Button onClick={handleSubmit}>Submit Quiz</Button>
+            <Button onClick={handleSubmit}>Submit Test</Button>
         </div>
         </div>
     )

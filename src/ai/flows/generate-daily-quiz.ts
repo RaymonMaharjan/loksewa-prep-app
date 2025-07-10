@@ -170,9 +170,9 @@ const GenerateDailyQuizInputSchema = z.object({
   numberOfQuestions: z
     .number()
     .min(5)
-    .max(10)
-    .default(5) // Default to 5 questions if not specified
-    .describe('The number of multiple-choice questions in the quiz (5-10).'),
+    .max(20)
+    .default(20) // Default to 20 questions if not specified
+    .describe('The number of multiple-choice questions in the quiz (5-20).'),
 });
 
 export type GenerateDailyQuizInput = z.infer<typeof GenerateDailyQuizInputSchema>;
@@ -221,5 +221,3 @@ const generateDailyQuizFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    

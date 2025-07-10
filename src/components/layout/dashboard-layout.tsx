@@ -7,7 +7,6 @@ import {
   BarChart2,
   BookOpenCheck,
   Calendar,
-  Settings,
   FileText,
   FlaskConical,
   LayoutDashboard,
@@ -43,7 +42,6 @@ const menuItems = [
   { href: '/question-bank', label: 'Question Bank', icon: List },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },
-  { href: '/content-management', label: 'Content Management', icon: Settings },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

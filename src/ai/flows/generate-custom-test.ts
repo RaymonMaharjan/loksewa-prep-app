@@ -65,26 +65,6 @@ Number of Questions: {{numQuestions}}
 Ensure that the questions are relevant to the specified topics, sub-topics, and difficulty level.
 
 Output the questions in JSON format. The "topic" field for each question should be the specific sub-topic from the syllabus it relates to.
-
-Here's the output format:
-{
-  "questions": [
-    {
-      "question": "Question 1 text",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "correctAnswer": "Correct Answer",
-      "topic": "Specific Sub-Topic from Syllabus",
-      "difficulty": "Question Difficulty"
-    },
-    {
-      "question": "Question 2 text",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "correctAnswer": "Correct Answer",
-      "topic": "Another Specific Sub-Topic",
-      "difficulty": "Question Difficulty"
-    }
-  ]
-}
 `,
 });
 
@@ -99,5 +79,3 @@ const generateCustomTestFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    

@@ -218,7 +218,7 @@ export default function CustomTestPage() {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="num-questions">Number of Questions</Label>
-                    <Input name="num-questions" id="num-questions" type="number" placeholder="e.g., 10" defaultValue="10" min="5" max="50" required />
+                    <Input name="num-questions" id="num-questions" type="number" placeholder="e.g., 10" defaultValue="10" min="5" max="25" required />
                 </div>
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>

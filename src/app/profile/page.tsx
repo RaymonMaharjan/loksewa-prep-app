@@ -44,4 +44,12 @@ export default function ProfilePage() {
                         </div>
                          <div className="p-4 bg-muted rounded-lg">
                             <p className="text-sm text-muted-foreground">Mock Tests Done</p>
-                            <p className="text-2xl font-bold">{history.filter(t => t.type
+                            <p className="text-2xl font-bold">{history.filter(t => t.type === 'mock-test').length}</p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    </DashboardLayout>
+  );
+}

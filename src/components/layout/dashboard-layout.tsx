@@ -11,7 +11,7 @@ import {
   FileText,
   FlaskConical,
   LayoutDashboard,
-  List,
+  Wand,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -40,8 +40,9 @@ const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/daily-quiz', label: 'Daily Quiz', icon: Calendar },
   { href: '/daily-mock-test', label: 'Mock Test', icon: FileText },
-  { href: '/performance', label: 'Performance', icon: BarChart2 },
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },
+  { href: '/study-plan', label: 'Study Plan', icon: Wand },
+  { href: '/performance', label: 'Performance', icon: BarChart2 },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

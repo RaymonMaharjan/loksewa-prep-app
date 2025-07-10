@@ -1,18 +1,17 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { BarChart, Calendar, FileText, FlaskConical } from 'lucide-react';
+import { BarChart, Calendar, FileText, FlaskConical, ArrowRight } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 
 export default function DashboardPage() {
   const router = useRouter();
 
   const quickLinks = [
-    { title: 'Start Daily Quiz', icon: Calendar, path: '/daily-quiz' },
-    { title: 'Browse Mock Tests', icon: FileText, path: '/mock-tests' },
-    { title: 'Create Custom Test', icon: FlaskConical, path: '/custom-test' },
-    { title: 'View Performance', icon: BarChart, path: '/performance' },
+    { title: 'Start Daily Quiz', icon: Calendar, path: '/daily-quiz', description: "Test your knowledge" },
+    { title: 'Browse Mock Tests', icon: FileText, path: '/mock-tests', description: "Simulate exam conditions" },
+    { title: 'Create Custom Test', icon: FlaskConical, path: '/custom-test', description: "Personalize your practice" },
+    { title: 'View Performance', icon: BarChart, path: '/performance', description: "Track your progress" },
   ];
 
   return (
@@ -24,15 +23,22 @@ export default function DashboardPage() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {quickLinks.map((link) => (
-            <Card key={link.title}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{link.title}</CardTitle>
-                <link.icon className="h-4 w-4 text-muted-foreground" />
+            <Card 
+              key={link.title} 
+              onClick={() => router.push(link.path)}
+              className="group cursor-pointer hover:border-primary transition-all duration-300 flex flex-col justify-between"
+            >
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <link.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-transform" />
+                </div>
               </CardHeader>
               <CardContent>
-                <Button onClick={() => router.push(link.path)} className="w-full">
-                  Go
-                </Button>
+                <CardTitle className="text-lg mb-1">{link.title}</CardTitle>
+                <CardDescription>{link.description}</CardDescription>
               </CardContent>
             </Card>
           ))}

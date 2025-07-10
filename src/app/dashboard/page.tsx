@@ -10,7 +10,7 @@ import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 
 const quickLinks = [
     { title: 'Start Daily Quiz', icon: Calendar, path: '/daily-quiz', description: "A quick 20-question test" },
-    { title: 'Daily Mock Test', icon: FileText, path: '/daily-mock-test', description: "A 50-question mock exam" },
+    { title: 'Mock Test', icon: FileText, path: '/daily-mock-test', description: "A 50-question mock exam" },
     { title: 'Create Custom Test', icon: FlaskConical, path: '/custom-test', description: "Personalize your practice" },
   ];
 

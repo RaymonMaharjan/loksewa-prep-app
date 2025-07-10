@@ -31,8 +31,7 @@ const syllabusTopics = [
 
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
-const NUM_QUESTIONS = 100;
-const SEGMENT_SIZE = 50;
+const NUM_QUESTIONS = 50;
 
 export default function DailyQuizPage() {
   const [test, setTest] = useState<GenerateCustomTestOutput['questions'] | null>(null);
@@ -41,7 +40,6 @@ export default function DailyQuizPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [currentSegment, setCurrentSegment] = useState(1);
 
   useEffect(() => {
     if (!test || isSubmitted) return;
@@ -74,7 +72,6 @@ export default function DailyQuizPage() {
       setSelectedAnswers({});
       setIsSubmitted(false);
       setScore(0);
-      setCurrentSegment(1);
     } catch (error) {
       console.error("Failed to generate test", error);
     } finally {
@@ -107,13 +104,6 @@ export default function DailyQuizPage() {
     const secs = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
-  
-  const getSegmentQuestions = () => {
-      if (!test) return [];
-      const start = (currentSegment - 1) * SEGMENT_SIZE;
-      const end = start + SEGMENT_SIZE;
-      return test.slice(start, end).map((q, i) => ({ ...q, originalIndex: start + i }));
-  };
 
   const renderInitialState = () => (
      <div className="flex items-center justify-center h-full">
@@ -123,7 +113,7 @@ export default function DailyQuizPage() {
               <Zap className="h-8 w-8 text-primary" />
             </div>
             <CardTitle className="text-2xl">Daily Mock Test</CardTitle>
-            <CardDescription>A full 100-question mock test is generated for you daily, split into two 50-question parts. It's timed and includes negative marking.</CardDescription>
+            <CardDescription>A 50-question mock test is generated for you daily. It's timed and includes negative marking.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
@@ -138,7 +128,7 @@ export default function DailyQuizPage() {
     <div className="flex flex-col items-center justify-center h-full text-center p-4">
       <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
       <h2 className="text-2xl font-semibold mb-2">Preparing Your Mock Test</h2>
-      <p className="text-muted-foreground">The AI is generating 100 unique questions for you. This may take a moment.</p>
+      <p className="text-muted-foreground">The AI is generating 50 unique questions for you. This may take a moment.</p>
     </div>
   )
 
@@ -182,13 +172,11 @@ export default function DailyQuizPage() {
   )
 
   const renderQuizState = () => {
-    const segmentQuestions = getSegmentQuestions();
-    
     return (
      <div className="max-w-3xl mx-auto">
         <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
             <div className="flex justify-between items-center mb-2">
-                <h1 className="text-2xl font-bold">Daily Mock Test - Part {currentSegment}</h1>
+                <h1 className="text-2xl font-bold">Daily Mock Test</h1>
                 <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
                     <TimerIcon className="h-6 w-6" />
                     <span>{formatTime(timeLeft)}</span>
@@ -202,18 +190,18 @@ export default function DailyQuizPage() {
             </Alert>
         </div>
 
-        {segmentQuestions.map((q) => (
-            <Card key={q.originalIndex} className="mb-6">
+        {test?.map((q, index) => (
+            <Card key={index} className="mb-6">
             <CardHeader>
-                <CardTitle>Question {q.originalIndex + 1}</CardTitle>
+                <CardTitle>Question {index + 1}</CardTitle>
                 <CardDescription className="text-lg pt-2">{q.question}</CardDescription>
             </CardHeader>
             <CardContent>
-                <RadioGroup value={selectedAnswers[q.originalIndex]} onValueChange={(value) => handleAnswerSelect(q.originalIndex, value)} className="space-y-4">
+                <RadioGroup value={selectedAnswers[index]} onValueChange={(value) => handleAnswerSelect(index, value)} className="space-y-4">
                 {q.options.map((option, i) => (
                     <div key={i} className="flex items-center space-x-2 p-3 rounded-md border has-[:checked]:bg-primary/10 has-[:checked]:border-primary transition-colors">
-                    <RadioGroupItem value={option} id={`q${q.originalIndex}-option-${i}`} />
-                    <Label htmlFor={`q${q.originalIndex}-option-${i}`} className="text-base flex-1 cursor-pointer">{option}</Label>
+                    <RadioGroupItem value={option} id={`q${index}-option-${i}`} />
+                    <Label htmlFor={`q${index}-option-${i}`} className="text-base flex-1 cursor-pointer">{option}</Label>
                     </div>
                 ))}
                 </RadioGroup>
@@ -222,11 +210,7 @@ export default function DailyQuizPage() {
         ))}
 
         <div className="flex justify-end mt-6">
-            {currentSegment === 1 ? (
-            <Button onClick={() => setCurrentSegment(2)}>Continue to Next Section</Button>
-            ) : (
             <Button onClick={handleSubmit}>Submit Test</Button>
-            )}
         </div>
         </div>
     )

@@ -9,13 +9,27 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 const questions = [
-  { id: 1, question: 'What is the capital of Nepal?', topic: 'GK', difficulty: 'Easy' },
-  { id: 2, question: 'Who wrote the book "Muna Madan"?', topic: 'Nepali', difficulty: 'Medium' },
-  { id: 3, question: 'Solve for x: 2x + 5 = 15', topic: 'IQ', difficulty: 'Easy' },
-  { id: 4, question: 'What is the synonym of "ubiquitous"?', topic: 'English', difficulty: 'Hard' },
-  { id: 5, question: 'When was the first constitution of Nepal promulgated?', topic: 'GK', difficulty: 'Medium' },
-  { id: 6, question: 'Identify the odd one out: Apple, Banana, Orange, Potato', topic: 'IQ', difficulty: 'Easy' },
-  { id: 7, question: 'Choose the correct preposition: He is good ___ English.', topic: 'English', difficulty: 'Medium' },
+  { id: 1, question: 'What are the main components of a CPU?', topic: 'Computer Fundamentals', difficulty: 'Easy' },
+  { id: 2, question: 'What is the difference between a class and an object?', topic: 'Programming', difficulty: 'Medium' },
+  { id: 3, question: 'Explain the concept of a binary search tree.', topic: 'Data Structures', difficulty: 'Hard' },
+  { id: 4, question: 'What is the function of the ALU in a microprocessor?', topic: 'Architecture', difficulty: 'Medium' },
+  { id: 5, question: 'Describe the process scheduling in an operating system.', topic: 'Operating Systems', difficulty: 'Hard' },
+  { id: 6, question: 'What is database normalization?', topic: 'DBMS', difficulty: 'Medium' },
+  { id: 7, question: 'What is the purpose of a firewall in network security?', topic: 'Networks & Security', difficulty: 'Easy' },
+];
+
+const topics = [
+    { value: 'computer_fundamentals', label: 'Computer Fundamentals' },
+    { value: 'programming', label: 'Programming' },
+    { value: 'data_structures', label: 'Data Structures' },
+    { value: 'architecture', label: 'Architecture' },
+    { value: 'os', label: 'Operating Systems' },
+    { value: 'dbms', label: 'DBMS' },
+    { value: 'networks_security', label: 'Networks & Security' },
+    { value: 'software_engineering', label: 'Software Engineering' },
+    { value: 'web_technologies', label: 'Web Technologies' },
+    { value: 'it_trends', label: 'IT Trends' },
+    { value: 'legal', label: 'Legal' },
 ];
 
 export default function QuestionBankPage() {
@@ -29,14 +43,13 @@ export default function QuestionBankPage() {
         <div className="flex flex-col md:flex-row gap-4">
           <Input placeholder="Search questions..." className="max-w-sm" />
           <Select>
-            <SelectTrigger className="w-full md:w-[180px]">
+            <SelectTrigger className="w-full md:w-[280px]">
               <SelectValue placeholder="Filter by Topic" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="gk">GK</SelectItem>
-              <SelectItem value="iq">IQ</SelectItem>
-              <SelectItem value="english">English</SelectItem>
-              <SelectItem value="nepali">Nepali</SelectItem>
+              {topics.map(topic => (
+                <SelectItem key={topic.value} value={topic.value}>{topic.label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <Select>

@@ -7,13 +7,20 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const topics = [
-  { id: 'gk', label: 'General Knowledge' },
-  { id: 'iq', label: 'IQ' },
-  { id: 'english', label: 'English' },
-  { id: 'nepali', label: 'Nepali' },
-  { id: 'math', label: 'Mathematics' },
+    { id: 'computer_fundamentals', label: 'Computer Fundamentals' },
+    { id: 'programming', label: 'Procedural and Object Oriented Programming' },
+    { id: 'data_structures', label: 'Data Structure and Algorithms' },
+    { id: 'architecture', label: 'Microprocessors and Computer Architecture' },
+    { id: 'os', label: 'Operating Systems' },
+    { id: 'dbms', label: 'Database Management System' },
+    { id: 'networks_security', label: 'Computer Networks and Security' },
+    { id: 'software_engineering', label: 'Software Engineering' },
+    { id: 'web_technologies', label: 'MIS and Web Technologies' },
+    { id: 'it_trends', label: 'Recent IT Trends and Terminology' },
+    { id: 'legal', label: 'Constitution, Acts, Rules and IT Policy' },
 ];
 
 export default function CustomTestPage() {
@@ -45,14 +52,16 @@ export default function CustomTestPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label>Topics</Label>
-                <div className="grid grid-cols-2 gap-4 rounded-lg border p-4">
-                  {topics.map((topic) => (
-                    <div key={topic.id} className="flex items-center space-x-2">
-                      <Checkbox id={topic.id} />
-                      <Label htmlFor={topic.id} className="font-normal cursor-pointer">{topic.label}</Label>
-                    </div>
-                  ))}
-                </div>
+                <ScrollArea className="h-72 w-full rounded-md border">
+                  <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {topics.map((topic) => (
+                      <div key={topic.id} className="flex items-start space-x-2">
+                        <Checkbox id={topic.id} />
+                        <Label htmlFor={topic.id} className="font-normal cursor-pointer leading-tight">{topic.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">

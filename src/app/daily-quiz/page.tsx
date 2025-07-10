@@ -11,6 +11,7 @@ import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/ge
 import { Loader2, TimerIcon, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -31,15 +32,16 @@ const syllabusTopics = [
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 const NUM_QUESTIONS = 100;
+const SEGMENT_SIZE = 50;
 
 export default function DailyQuizPage() {
   const [test, setTest] = useState<GenerateCustomTestOutput['questions'] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [currentSegment, setCurrentSegment] = useState(1);
 
   useEffect(() => {
     if (!test || isSubmitted) return;
@@ -69,10 +71,10 @@ export default function DailyQuizPage() {
       });
       setTest(result.questions);
       setTimeLeft(result.questions.length * TIME_PER_QUESTION_SECONDS);
-      setCurrentQuestionIndex(0);
       setSelectedAnswers({});
       setIsSubmitted(false);
       setScore(0);
+      setCurrentSegment(1);
     } catch (error) {
       console.error("Failed to generate test", error);
     } finally {
@@ -80,8 +82,8 @@ export default function DailyQuizPage() {
     }
   };
 
-  const handleAnswerSelect = (value: string) => {
-    setSelectedAnswers(prev => ({...prev, [currentQuestionIndex]: value}));
+  const handleAnswerSelect = (questionIndex: number, value: string) => {
+    setSelectedAnswers(prev => ({...prev, [questionIndex]: value}));
   };
 
   const handleSubmit = () => {
@@ -100,12 +102,17 @@ export default function DailyQuizPage() {
     setIsSubmitted(true);
   };
 
-  const currentQuestion = test?.[currentQuestionIndex];
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+  
+  const getSegmentQuestions = () => {
+      if (!test) return [];
+      const start = (currentSegment - 1) * SEGMENT_SIZE;
+      const end = start + SEGMENT_SIZE;
+      return test.slice(start, end).map((q, i) => ({ ...q, originalIndex: start + i }));
   };
 
   const renderInitialState = () => (
@@ -116,7 +123,7 @@ export default function DailyQuizPage() {
               <Zap className="h-8 w-8 text-primary" />
             </div>
             <CardTitle className="text-2xl">Daily Mock Test</CardTitle>
-            <CardDescription>A full 100-question mock test is generated for you daily. It's timed and includes negative marking.</CardDescription>
+            <CardDescription>A full 100-question mock test is generated for you daily, split into two 50-question parts. It's timed and includes negative marking.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
@@ -136,7 +143,7 @@ export default function DailyQuizPage() {
   )
 
   const renderResultsState = () => (
-      <Card className="w-full max-w-2xl mx-auto">
+      <Card className="w-full max-w-3xl mx-auto">
           <CardHeader className="text-center">
               <CardTitle className="text-3xl">Test Results</CardTitle>
           </CardHeader>
@@ -152,7 +159,8 @@ export default function DailyQuizPage() {
                     Correct answers are worth 1 point. Incorrect answers have a negative marking of {NEGATIVE_MARKING_PER_QUESTION} points.
                   </AlertDescription>
               </Alert>
-              <div className="space-y-4">
+              <ScrollArea className="h-96">
+                <div className="space-y-4 pr-4">
                   {test?.map((q, index) => {
                       const userAnswer = selectedAnswers[index];
                       const isCorrect = userAnswer === q.correctAnswer;
@@ -164,7 +172,8 @@ export default function DailyQuizPage() {
                           </div>
                       )
                   })}
-              </div>
+                </div>
+              </ScrollArea>
                <div className="mt-6 text-center">
                   <Button onClick={handleStartQuiz}>Try Another Test</Button>
               </div>
@@ -172,47 +181,56 @@ export default function DailyQuizPage() {
       </Card>
   )
 
-  const renderQuizState = () => (
+  const renderQuizState = () => {
+    const segmentQuestions = getSegmentQuestions();
+    
+    return (
      <div className="max-w-3xl mx-auto">
-      <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <h1 className="text-2xl font-bold">Daily Mock Test</h1>
-            <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
-                <TimerIcon className="h-6 w-6" />
-                <span>{formatTime(timeLeft)}</span>
-            </div>
-          </div>
-          <Progress value={((currentQuestionIndex + 1) / (test?.length || 1)) * 100} />
-      </div>
-
-      {currentQuestion && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Question {currentQuestionIndex + 1} of {test?.length}</CardTitle>
-            <CardDescription className="text-lg pt-2">{currentQuestion.question}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RadioGroup value={selectedAnswers[currentQuestionIndex]} onValueChange={handleAnswerSelect} className="space-y-4">
-              {currentQuestion.options.map((option, i) => (
-                <div key={i} className="flex items-center space-x-2 p-3 rounded-md border has-[:checked]:bg-primary/10 has-[:checked]:border-primary transition-colors">
-                  <RadioGroupItem value={option} id={`option-${i}`} />
-                  <Label htmlFor={`option-${i}`} className="text-base flex-1 cursor-pointer">{option}</Label>
+        <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
+            <div className="flex justify-between items-center mb-2">
+                <h1 className="text-2xl font-bold">Daily Mock Test - Part {currentSegment}</h1>
+                <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
+                    <TimerIcon className="h-6 w-6" />
+                    <span>{formatTime(timeLeft)}</span>
                 </div>
-              ))}
-            </RadioGroup>
-          </CardContent>
-        </Card>
-      )}
-      <div className="flex justify-between mt-6">
-        <Button variant="outline" onClick={() => setCurrentQuestionIndex(p => Math.max(0, p - 1))} disabled={currentQuestionIndex === 0}>Previous</Button>
-        {currentQuestionIndex < (test?.length || 0) - 1 ? (
-          <Button onClick={() => setCurrentQuestionIndex(p => Math.min(test!.length-1, p + 1))}>Next</Button>
-        ) : (
-          <Button onClick={handleSubmit}>Submit</Button>
-        )}
-      </div>
-    </div>
-  )
+            </div>
+            <Progress value={((Object.keys(selectedAnswers).length) / (test?.length || 1)) * 100} />
+             <Alert className="mt-4">
+               <AlertDescription>
+                This test is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Good luck!
+               </AlertDescription>
+            </Alert>
+        </div>
+
+        {segmentQuestions.map((q) => (
+            <Card key={q.originalIndex} className="mb-6">
+            <CardHeader>
+                <CardTitle>Question {q.originalIndex + 1}</CardTitle>
+                <CardDescription className="text-lg pt-2">{q.question}</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <RadioGroup value={selectedAnswers[q.originalIndex]} onValueChange={(value) => handleAnswerSelect(q.originalIndex, value)} className="space-y-4">
+                {q.options.map((option, i) => (
+                    <div key={i} className="flex items-center space-x-2 p-3 rounded-md border has-[:checked]:bg-primary/10 has-[:checked]:border-primary transition-colors">
+                    <RadioGroupItem value={option} id={`q${q.originalIndex}-option-${i}`} />
+                    <Label htmlFor={`q${q.originalIndex}-option-${i}`} className="text-base flex-1 cursor-pointer">{option}</Label>
+                    </div>
+                ))}
+                </RadioGroup>
+            </CardContent>
+            </Card>
+        ))}
+
+        <div className="flex justify-end mt-6">
+            {currentSegment === 1 ? (
+            <Button onClick={() => setCurrentSegment(2)}>Continue to Next Section</Button>
+            ) : (
+            <Button onClick={handleSubmit}>Submit Test</Button>
+            )}
+        </div>
+        </div>
+    )
+    }
 
   return (
     <DashboardLayout>

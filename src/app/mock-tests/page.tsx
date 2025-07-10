@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Progress } from '@/components/ui/progress';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 type MockTest = {
@@ -37,7 +38,7 @@ const syllabusTopics = [
 ];
 
 const mockTests: MockTest[] = [
-    { id: 'full-syllabus', title: 'Full Syllabus Mock Test', topic: 'all', difficulty: 'Hard', description: "A comprehensive test covering all topics." },
+    { id: 'full-syllabus', title: 'Full Syllabus Mock Test', topic: 'all', difficulty: 'Hard', description: "A comprehensive test covering all topics to simulate the real exam." },
     { id: 'cf-1', title: 'Computer Fundamentals', topic: ['Computer Fundamentals'], difficulty: 'Medium', description: 'Focus on the basics of computer systems.' },
     { id: 'ds-1', title: 'Data Structures & Algorithms', topic: ['Data Structure and Algorithms'], difficulty: 'Hard', description: 'Test your knowledge on complex data structures.' },
     { id: 'dbms-1', title: 'Database Management', topic: ['Database Management System'], difficulty: 'Medium', description: 'Questions on DBMS concepts and SQL.' },
@@ -47,6 +48,7 @@ const mockTests: MockTest[] = [
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
 const NUM_QUESTIONS = 100;
+const SEGMENT_SIZE = 50;
 
 export default function MockTestsPage() {
   const { toast } = useToast();
@@ -57,6 +59,8 @@ export default function MockTestsPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [currentSegment, setCurrentSegment] = useState(1);
+
 
   useEffect(() => {
     if (!activeTest || isSubmitted) return;
@@ -82,6 +86,7 @@ export default function MockTestsPage() {
     setSelectedAnswers({});
     setScore(0);
     setActiveTestTitle(test.title);
+    setCurrentSegment(1);
 
     try {
       const topicsToSend = test.topic === 'all' ? syllabusTopics : test.topic;
@@ -135,6 +140,14 @@ export default function MockTestsPage() {
     const secs = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
+
+  const getSegmentQuestions = () => {
+      if (!activeTest) return [];
+      const start = (currentSegment - 1) * SEGMENT_SIZE;
+      const end = start + SEGMENT_SIZE;
+      return activeTest.questions.slice(start, end).map((q, i) => ({ ...q, originalIndex: start + i }));
+  };
+
 
   if (isLoading) {
     return (
@@ -193,18 +206,21 @@ export default function MockTestsPage() {
       );
     }
 
+    const segmentQuestions = getSegmentQuestions();
+
     return (
       <DashboardLayout>
           <div className="flex flex-col h-[calc(100vh-theme(spacing.24))]">
               <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4">
                   <div className="flex justify-between items-center mb-2 max-w-5xl mx-auto px-4">
-                      <h1 className="text-xl md:text-2xl font-bold truncate pr-4">{activeTestTitle}</h1>
+                      <h1 className="text-xl md:text-2xl font-bold truncate pr-4">{activeTestTitle} - Part {currentSegment}</h1>
                       <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 600 ? "text-destructive" : "text-primary")}>
                           <TimerIcon className="h-6 w-6" />
                           <span>{formatTime(timeLeft)}</span>
                       </div>
                   </div>
                    <div className="max-w-5xl mx-auto px-4">
+                        <Progress value={((Object.keys(selectedAnswers).length) / (activeTest?.questions.length || 1)) * 100} className="mb-2"/>
                         <Alert>
                             <AlertDescription>
                                 This is a full-length mock test. Each incorrect answer will result in a deduction of {NEGATIVE_MARKING_PER_QUESTION} points.
@@ -214,25 +230,31 @@ export default function MockTestsPage() {
               </div>
               <ScrollArea className="flex-grow">
                   <div className="max-w-5xl mx-auto space-y-6 px-4 py-6">
-                      {activeTest.questions.map((q, index) => (
-                          <Card key={index}>
+                      {segmentQuestions.map((q) => (
+                          <Card key={q.originalIndex}>
                               <CardHeader>
-                                  <CardTitle>Question {index + 1}</CardTitle>
+                                  <CardTitle>Question {q.originalIndex + 1}</CardTitle>
                                   <CardDescription className="text-base md:text-lg pt-2">{q.question}</CardDescription>
                               </CardHeader>
                               <CardContent>
-                                  <RadioGroup value={selectedAnswers[index]} onValueChange={(value) => handleAnswerSelect(index, value)} className="space-y-4">
+                                  <RadioGroup value={selectedAnswers[q.originalIndex]} onValueChange={(value) => handleAnswerSelect(q.originalIndex, value)} className="space-y-4">
                                       {q.options.map((option, i) => (
                                           <div key={i} className="flex items-center space-x-2 p-3 rounded-md border has-[:checked]:bg-primary/10 has-[:checked]:border-primary transition-colors">
-                                              <RadioGroupItem value={option} id={`q${index}-option-${i}`} />
-                                              <Label htmlFor={`q${index}-option-${i}`} className="text-sm md:text-base flex-1 cursor-pointer">{option}</Label>
+                                              <RadioGroupItem value={option} id={`q${q.originalIndex}-option-${i}`} />
+                                              <Label htmlFor={`q${q.originalIndex}-option-${i}`} className="text-sm md:text-base flex-1 cursor-pointer">{option}</Label>
                                           </div>
                                       ))}
                                   </RadioGroup>
                               </CardContent>
                           </Card>
                       ))}
-                      <Button onClick={handleSubmitTest} className="w-full !mt-8">Submit Test</Button>
+                      <div className="flex justify-end mt-8">
+                        {currentSegment === 1 ? (
+                            <Button onClick={() => setCurrentSegment(2)}>Continue to Next Section</Button>
+                        ) : (
+                            <Button onClick={handleSubmitTest}>Submit Test</Button>
+                        )}
+                      </div>
                   </div>
               </ScrollArea>
           </div>

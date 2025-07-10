@@ -14,7 +14,6 @@ import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/ge
 import { Loader2 } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -128,25 +127,20 @@ export default function CustomTestPage() {
 
         const formData = new FormData(e.currentTarget);
         
-        const selectedTopics: string[] = [];
+        const selectedTopicLabels: string[] = [];
         syllabus.forEach(topic => {
-            topic.subTopics.forEach((subTopic, index) => {
-                if (formData.has(`${topic.id}-${index}`)) {
-                    if(!selectedTopics.includes(topic.label)) {
-                        selectedTopics.push(topic.label);
-                    }
-                    selectedTopics.push(`  - ${subTopic}`);
-                }
-            });
+            if (formData.has(topic.id)) {
+                selectedTopicLabels.push(topic.label);
+            }
         });
 
         const difficulty = formData.get('difficulty') as 'easy' | 'medium' | 'hard';
         const numQuestions = parseInt(formData.get('num-questions') as string, 10);
         
-        if (selectedTopics.length === 0) {
+        if (selectedTopicLabels.length === 0) {
             toast({
                 title: "No Topics Selected",
-                description: "Please select at least one sub-topic.",
+                description: "Please select at least one topic.",
                 variant: "destructive",
             });
             setIsLoading(false);
@@ -155,7 +149,7 @@ export default function CustomTestPage() {
 
         try {
             const result = await generateCustomTest({
-                topics: selectedTopics,
+                topics: selectedTopicLabels,
                 difficulty,
                 numQuestions,
             });
@@ -281,25 +275,16 @@ export default function CustomTestPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label>Syllabus Topics (Select at least one sub-topic)</Label>
-                <ScrollArea className="h-72 w-full rounded-md border">
-                    <Accordion type="multiple" className="w-full p-2">
+                <Label>Syllabus Topics (Select at least one)</Label>
+                <ScrollArea className="h-72 w-full rounded-md border p-4">
+                    <div className="space-y-3">
                         {syllabus.map((topic) => (
-                            <AccordionItem value={topic.id} key={topic.id}>
-                                <AccordionTrigger className="hover:no-underline font-medium">{topic.label}</AccordionTrigger>
-                                <AccordionContent>
-                                    <div className="space-y-3 pl-4">
-                                        {topic.subTopics.map((subTopic, index) => (
-                                            <div key={`${topic.id}-${index}`} className="flex items-start space-x-2">
-                                                <Checkbox id={`${topic.id}-${index}`} name={`${topic.id}-${index}`} />
-                                                <Label htmlFor={`${topic.id}-${index}`} className="font-normal cursor-pointer leading-tight">{subTopic}</Label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </AccordionContent>
-                            </AccordionItem>
+                            <div key={topic.id} className="flex items-start space-x-2">
+                                <Checkbox id={topic.id} name={topic.id} />
+                                <Label htmlFor={topic.id} className="font-normal cursor-pointer leading-tight">{topic.label}</Label>
+                            </div>
                         ))}
-                    </Accordion>
+                    </div>
                 </ScrollArea>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -331,5 +316,3 @@ export default function CustomTestPage() {
     </DashboardLayout>
   );
 }
-
-    

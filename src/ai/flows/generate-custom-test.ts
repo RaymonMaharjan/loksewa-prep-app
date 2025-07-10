@@ -208,7 +208,7 @@ ${fullSyllabus}
 
 You will generate a custom test with the specified number of questions and difficulty level, based on the user-selected main topics.
 
-When a user selects a main topic, you must GO DEEP into that topic by creating questions from its specific sub-topics listed in the syllabus above. Generate specific, high-quality multiple-choice questions. Ensure each question has four plausible options and one correct answer.
+When a user selects a main topic, you must GO DEEP into that topic by creating questions from its specific sub-topics listed in the syllabus above. Generate specific, high-quality multiple-choice questions. Ensure each question has four plausible options and one correct answer. Each time this prompt is called, you must generate a new and unique set of questions that have not been asked before.
 
 User's Selected Topics:
 {{#each topics}}

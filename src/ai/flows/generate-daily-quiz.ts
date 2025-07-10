@@ -43,7 +43,9 @@ const generateDailyQuizPrompt = ai.definePrompt({
   name: 'generateDailyQuizPrompt',
   input: {schema: GenerateDailyQuizInputSchema},
   output: {schema: GenerateDailyQuizOutputSchema},
-  prompt: `You are an expert quiz generator. Generate a quiz with {{numberOfQuestions}} multiple-choice questions on the topic of {{topic}}.  Each question should have four options, and clearly identify the correct answer.
+  prompt: `You are an expert quiz generator. Generate a quiz with {{numberOfQuestions}} multiple-choice questions on the topic of {{topic}}. Each question should have four options, and clearly identify the correct answer.
+
+Each time this prompt is called, you must generate a new and unique set of questions that have not been asked before.
 
 Output the quiz in JSON format as a list of question objects with 'question', 'options', and 'answer' fields. The 'options' field should be a list of strings.
 

@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
@@ -9,7 +10,6 @@ import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 
 const quickLinks = [
     { title: 'Start Daily Quiz', icon: Calendar, path: '/daily-quiz', description: "Test your knowledge" },
-    { title: 'Browse Mock Tests', icon: FileText, path: '/mock-tests', description: "Simulate exam conditions" },
     { title: 'Create Custom Test', icon: FlaskConical, path: '/custom-test', description: "Personalize your practice" },
     { title: 'View Performance', icon: BarChart, path: '/performance', description: "Track your progress" },
   ];
@@ -54,7 +54,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl md:text-3xl font-bold">Welcome back!</h1>
           <p className="text-muted-foreground">Here's a quick overview of your prep status.</p>
         </div>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {quickLinks.map((link) => (
             <Card 
               key={link.title} 

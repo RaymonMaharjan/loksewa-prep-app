@@ -31,7 +31,7 @@ const syllabusTopics = [
 
 const TIME_PER_QUESTION_SECONDS = 54;
 const NEGATIVE_MARKING_PER_QUESTION = 0.20;
-const NUM_QUESTIONS = 50;
+const NUM_QUESTIONS = 20;
 
 export default function DailyQuizPage() {
   const [test, setTest] = useState<GenerateCustomTestOutput['questions'] | null>(null);
@@ -112,12 +112,12 @@ export default function DailyQuizPage() {
             <div className="mx-auto bg-primary/10 p-3 rounded-full mb-4">
               <Zap className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-2xl">Daily Mock Test</CardTitle>
-            <CardDescription>A 50-question mock test is generated for you daily. It's timed and includes negative marking.</CardDescription>
+            <CardTitle className="text-2xl">Daily Quiz</CardTitle>
+            <CardDescription>A 20-question quiz is generated for you daily from all topics. It's timed and includes negative marking.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button size="lg" onClick={handleStartQuiz} disabled={isLoading}>
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Mock Test'}
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Start Today\'s Quiz'}
             </Button>
           </CardContent>
         </Card>
@@ -127,15 +127,15 @@ export default function DailyQuizPage() {
   const renderLoadingState = () => (
     <div className="flex flex-col items-center justify-center h-full text-center p-4">
       <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-      <h2 className="text-2xl font-semibold mb-2">Preparing Your Mock Test</h2>
-      <p className="text-muted-foreground">The AI is generating 50 unique questions for you. This may take a moment.</p>
+      <h2 className="text-2xl font-semibold mb-2">Preparing Your Quiz</h2>
+      <p className="text-muted-foreground">The AI is generating 20 unique questions for you. This may take a moment.</p>
     </div>
   )
 
   const renderResultsState = () => (
       <Card className="w-full max-w-3xl mx-auto">
           <CardHeader className="text-center">
-              <CardTitle className="text-3xl">Test Results</CardTitle>
+              <CardTitle className="text-3xl">Quiz Results</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
               <div className="text-center">
@@ -165,7 +165,7 @@ export default function DailyQuizPage() {
                 </div>
               </ScrollArea>
                <div className="mt-6 text-center">
-                  <Button onClick={handleStartQuiz}>Try Another Test</Button>
+                  <Button onClick={handleStartQuiz}>Try Another Quiz</Button>
               </div>
           </CardContent>
       </Card>
@@ -176,7 +176,7 @@ export default function DailyQuizPage() {
      <div className="max-w-3xl mx-auto">
         <div className="sticky top-16 md:top-0 bg-background/80 backdrop-blur-sm z-10 py-4 -my-4 mb-4">
             <div className="flex justify-between items-center mb-2">
-                <h1 className="text-2xl font-bold">Daily Mock Test</h1>
+                <h1 className="text-2xl font-bold">Daily Quiz</h1>
                 <div className={cn("flex items-center gap-2 font-mono text-lg font-semibold", timeLeft < 60 ? "text-destructive" : "text-primary")}>
                     <TimerIcon className="h-6 w-6" />
                     <span>{formatTime(timeLeft)}</span>
@@ -185,7 +185,7 @@ export default function DailyQuizPage() {
             <Progress value={((Object.keys(selectedAnswers).length) / (test?.length || 1)) * 100} />
              <Alert className="mt-4">
                <AlertDescription>
-                This test is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Good luck!
+                This quiz is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Good luck!
                </AlertDescription>
             </Alert>
         </div>
@@ -210,7 +210,7 @@ export default function DailyQuizPage() {
         ))}
 
         <div className="flex justify-end mt-6">
-            <Button onClick={handleSubmit}>Submit Test</Button>
+            <Button onClick={handleSubmit}>Submit Quiz</Button>
         </div>
         </div>
     )

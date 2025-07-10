@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
@@ -13,21 +14,99 @@ import { generateCustomTest, type GenerateCustomTestOutput } from '@/ai/flows/ge
 import { Loader2 } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
-const topics = [
-    { id: 'computer_fundamentals', label: 'Computer Fundamentals' },
-    { id: 'programming', label: 'Procedural and Object Oriented Programming' },
-    { id: 'data_structures', label: 'Data Structure and Algorithms' },
-    { id: 'architecture', label: 'Microprocessors and Computer Architecture' },
-    { id: 'os', label: 'Operating Systems' },
-    { id: 'dbms', label: 'Database Management System' },
-    { id: 'networks_security', label: 'Computer Networks and Security' },
-    { id: 'software_engineering', label: 'Software Engineering' },
-    { id: 'web_technologies', label: 'MIS and Web Technologies' },
-    { id: 'it_trends', label: 'Recent IT Trends and Terminology' },
-    { id: 'legal', label: 'Constitution, Acts, Rules and IT Policy' },
+const syllabus = [
+    { 
+        id: 'computer_fundamentals', 
+        label: 'Computer Fundamentals',
+        subTopics: [
+            'Introduction to computer systems',
+            'Computer Hardware and Software',
+            'CPU: ALU, Registers, CU',
+            'Memory and Storage devices',
+            'Input and Output devices',
+            'Operating system and application programs',
+            'Computer virus and remedies',
+            'Word processor, Spreadsheet, PowerPoint',
+            'Computer system configuration',
+            'Basic troubleshooting',
+            'Fonts, Nepali Fonts, Unicode and Unicode Fonts',
+            'Using Unicode for Nepali documents',
+        ]
+    },
+    { 
+        id: 'programming', 
+        label: 'Procedural and Object Oriented Programming',
+        subTopics: [
+            'Concept of Procedural Programming', 'Programming with C', 'Keywords, Identifiers', 'Data types', 'Statements and Operators', 'Preprocessor Directives', 'Input/Output, Control statements, Loops', 'Procedure/Functions', 'Array, String and Pointer', 'Structure and Union', 'Files', 'Object Oriented Programming and Features', 'Objects and Classes', 'Operator/Function Overloading', 'Abstraction, Encapsulation, Inheritance, Polymorphism, Template', 'Exception handling'
+        ]
+    },
+    { 
+        id: 'data_structures', 
+        label: 'Data Structure and Algorithms',
+        subTopics: [
+            'Data structures and Abstract data types', 'Stack and Queue', 'Lists, Linked Lists, Queues, Trees, Binary Search-Trees', 'Recursion', 'Introductory Notions of algorithm design: Divide-and-Conquer, Dynamic Programming, Greedy Methods, Backtracking', 'Graph algorithms: Depth-first Search and Breadth-first Search, Shortest Path Problems, Minimum Spanning Trees, Directed Acyclic Graphs. Complexity Analysis of Algorithms, Worst and Average Case Analysis', 'Time and Space Analysis of Algorithms', 'Hashing', 'Sorting', 'Searching', 'Graphs, Graph Traversals'
+        ]
+    },
+    { 
+        id: 'architecture', 
+        label: 'Microprocessors and Computer Architecture',
+        subTopics: [
+            'Microprocessor and Bus System of Microprocessor Based System', 'Intel 8085 microprocessor architecture, programming and interfacing', 'Intel 8086 microprocessor architecture', 'Assembly Language Programming with 8086', 'Instruction Set, Instruction Format and Addressing Modes', 'Interrupt System in Microprocessors', 'Computer Organization and Computer Architecture', 'Instruction Cycle and Machine Cycle, Execution of an Instruction', 'CPU structure and function, Arithmetic and Logic Unit, Representation of data, Arithmetic operations', 'Control Unit, Hardwired and Microprogrammed Control Unit', 'Memory Devices, Classification and Hierarchies', 'Cache Memory and Cache Mapping, Multi-level Cache Memory', 'Von Neumann and Harvard architecture, RISC & CISC architecture', 'Input Output Organization: I/O programming, memory mapped I/O, basic interrupt system, DMA', 'Pipelining, Pipelining Hazards and Remedies', 'Multiprocessors and Multicore architecture'
+        ]
+    },
+    { 
+        id: 'os', 
+        label: 'Operating Systems',
+        subTopics: [
+            'Operating system and its functions', 'Types of operating systems', 'Basic components of the Operating Systems', 'Process and Threads, Process Management, Inter-Process Communication, Mutual Exclusion and Synchronization', 'Process Scheduling', 'Memory Management techniques', 'File System Management', 'I/O Management & Disk Allocation and Scheduling Methods', 'Deadlock', 'Security', 'Distributed Systems: Distributed Message passing, RPC, Client-server computing, Clusters', 'Common Operating Systems: Windows and Linux with Their typical features'
+        ]
+    },
+    { 
+        id: 'dbms', 
+        label: 'Database Management System',
+        subTopics: [
+            'Database Management System and its Applications', 'ER modeling', 'Relational Languages and Relational Model', 'Database Constraints and Normalization', 'Normalization: 1NF, 2NF, 3NF, BCNF, 4NF,5NF, DKNF', 'Architecture of DBMS: Client-server, Open Architectures, Transaction Processing, Multi-User & Concurrency, and Backup & Recovery Database.', 'Basic Concept of major RDBMS products: Oracle, Sybase, DB2, SQL Server and other Databases.', 'SQL queries, Views', 'Query Processing and Optimization', 'Database Storage, Indexing and Hashing', 'Transactions Management and Concurrency Control', 'Crash Recovery', 'Distributed Database Systems and Object-Oriented Database System', 'Concept of Data Warehousing'
+        ]
+    },
+    { 
+        id: 'networks_security', 
+        label: 'Computer Networks and Security',
+        subTopics: [
+            'Computer Networks, Types of networks and Applications', 'Layered network architecture, OSI and TCP/IP model', 'Physical layer, Transmission media, Switching and Multiplexing, Data Encoding Techniques', 'Data Link Layer and its services, MAC Address, Multiple access protocols, CSMA/CD, CSMA/CA', 'Network Devices: Repeaters, Hubs, Bridges, Switches, Routers, Gateways and their functions', 'Network Layer and its services, IP addressing, Public and Private IP address, Network Layer Protocols, Routing Principles, Classifications of Routing Algorithms, Routing Protocols, IPv4, IPv6', 'IP address management, Autonomous system, Multi-homing', 'Transport Layer and its functions, Port number, TCP and UDP Protocols', 'Application Layer protocols and functions, HTTP & HTTPS, FTP, DNS, SMTP, POP, IMAP Protocols', 'Distributed system, Clusters, Network Security, Disaster Recovery, Data Storage Techniques: Clustering, NAS, SAN', 'Network Security and its Importance, Passive and Active Attacks,', 'Cryptography, Traditional Ciphers', 'Symmetric Encryption, DES and AES', 'Asymmetric encryption and its importance, Diffie and Hellman algorithm, RSA Algorithm', 'Cryptographic Hash Functions, Message Authentication Code, Digital Signature', 'Securing Wireless LANs, VPN, Firewalls, IDS and IPS', 'Disaster Recovery: Need for Disaster Recovery, Disaster Recovery plan, Data backup, Fault Tolerance', 'Advanced Data Storage Techniques: Enterprise Data Storage, Clustering, Network Attached Storage, Storage Area Networks', 'Network Troubleshooting: Using Systematic Approach to Troubleshooting', 'Network Support Tools: Utilities, Network Baseline', 'Network Access Points (NAP), Common Network Component, Common Peripheral Ports'
+        ]
+    },
+    { 
+        id: 'software_engineering', 
+        label: 'Software Engineering',
+        subTopics: [
+            'Software Engineering and its importance', 'Software Process models', 'Requirement engineering', 'System models', 'Architectural design', 'Software Reuse', 'Software Testing, Verification and Validation', 'Software Estimation', 'Quality Management', 'Configuration Management', 'Software Project Management'
+        ]
+    },
+    { 
+        id: 'web_technologies', 
+        label: 'MIS and Web Technologies',
+        subTopics: [
+            'Information Systems and Decision making', 'Basics of Website Design, HTML and Content Management System', 'JavaScript, XML, PHP', 'Client server architecture', 'Managing a web server, Hosting a website in a server and via cloud service providers', 'Multimedia systems', 'Knowledge Management, The strategic use of Information Technology.', 'Work Process Redesign (Reengineering) with Information Technology, Enterprise Resources Planning Systems, Information Systems Security, Information Privacy, and Global Information Technology issues.', 'Software Supported Demonstrations including advanced Spreadsheet topics, Software Component Based Systems (CBSE),'
+        ]
+    },
+    { 
+        id: 'it_trends', 
+        label: 'Recent IT Trends and Terminology',
+        subTopics: [
+            'Machine Learning and Artificial Intelligence', 'Computer Vision', 'Internet of Things (IoT)', 'BigData', 'Block Chain', 'E-Governance, E-commerce', 'Data Center and its management', 'Cloud/Grid/Cluster/Edge computing', 'Video conferencing/Online meeting/Online class'
+        ]
+    },
+    { 
+        id: 'legal', 
+        label: 'Constitution of Nepal, Acts, Rules and IT Policy',
+        subTopics: [
+            'The Constitution of Nepal', 'History of IT in Nepal', 'Copyright Act, 2059 B.S.', 'Electronic Transaction Act, 2063 B.S.', 'IT Policy of Nepal, 2072 B.S.', 'Digital Nepal Framework 2076', 'Licensing Issues', 'Basic concept of Public Procurement Act, Public Procurement Rule, Procurement Process, PPMO, E-bidding'
+        ]
+    },
 ];
 
 
@@ -48,14 +127,26 @@ export default function CustomTestPage() {
         setSelectedAnswers({});
 
         const formData = new FormData(e.currentTarget);
-        const selectedTopics = topics.filter(topic => formData.has(topic.id)).map(topic => topic.label);
+        
+        const selectedTopics: string[] = [];
+        syllabus.forEach(topic => {
+            topic.subTopics.forEach((subTopic, index) => {
+                if (formData.has(`${topic.id}-${index}`)) {
+                    if(!selectedTopics.includes(topic.label)) {
+                        selectedTopics.push(topic.label);
+                    }
+                    selectedTopics.push(`  - ${subTopic}`);
+                }
+            });
+        });
+
         const difficulty = formData.get('difficulty') as 'easy' | 'medium' | 'hard';
         const numQuestions = parseInt(formData.get('num-questions') as string, 10);
         
         if (selectedTopics.length === 0) {
             toast({
                 title: "No Topics Selected",
-                description: "Please select at least one topic.",
+                description: "Please select at least one sub-topic.",
                 variant: "destructive",
             });
             setIsLoading(false);
@@ -190,16 +281,25 @@ export default function CustomTestPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label>Topics (Select at least one)</Label>
+                <Label>Syllabus Topics (Select at least one sub-topic)</Label>
                 <ScrollArea className="h-72 w-full rounded-md border">
-                  <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {topics.map((topic) => (
-                      <div key={topic.id} className="flex items-start space-x-2">
-                        <Checkbox id={topic.id} name={topic.id} />
-                        <Label htmlFor={topic.id} className="font-normal cursor-pointer leading-tight">{topic.label}</Label>
-                      </div>
-                    ))}
-                  </div>
+                    <Accordion type="multiple" className="w-full p-2">
+                        {syllabus.map((topic) => (
+                            <AccordionItem value={topic.id} key={topic.id}>
+                                <AccordionTrigger className="hover:no-underline font-medium">{topic.label}</AccordionTrigger>
+                                <AccordionContent>
+                                    <div className="space-y-3 pl-4">
+                                        {topic.subTopics.map((subTopic, index) => (
+                                            <div key={`${topic.id}-${index}`} className="flex items-start space-x-2">
+                                                <Checkbox id={`${topic.id}-${index}`} name={`${topic.id}-${index}`} />
+                                                <Label htmlFor={`${topic.id}-${index}`} className="font-normal cursor-pointer leading-tight">{subTopic}</Label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
                 </ScrollArea>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -231,3 +331,5 @@ export default function CustomTestPage() {
     </DashboardLayout>
   );
 }
+
+    

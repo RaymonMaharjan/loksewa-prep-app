@@ -196,9 +196,13 @@ export default function CustomTestPage() {
                     <Card className="w-full max-w-3xl mx-auto">
                         <CardHeader className="text-center">
                             <CardTitle className="text-2xl md:text-3xl">Test Results</CardTitle>
-                            <CardDescription>Your final score is {score.toFixed(2)} out of {generatedTest.questions.length}!</CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-6">
+                            <div className="text-center">
+                                <p className="text-muted-foreground mb-2">Your Final Score</p>
+                                <p className="text-5xl md:text-6xl font-bold text-primary">{score.toFixed(2)}</p>
+                                <p className="text-muted-foreground mt-1">out of {generatedTest.questions.length} total marks</p>
+                            </div>
                             <Alert className="mb-6">
                               <AlertTitle>Scoring Details</AlertTitle>
                               <AlertDescription>

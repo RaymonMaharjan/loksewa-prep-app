@@ -119,10 +119,14 @@ export default function DailyQuizPage() {
       <Card className="w-full max-w-2xl mx-auto">
           <CardHeader className="text-center">
               <CardTitle className="text-3xl">Quiz Results</CardTitle>
-              <CardDescription>Your final score is {score.toFixed(2)} out of {quiz?.length}!</CardDescription>
           </CardHeader>
-          <CardContent>
-              <Alert className="mb-6">
+          <CardContent className="space-y-6">
+              <div className="text-center">
+                  <p className="text-muted-foreground mb-2">Your Final Score</p>
+                  <p className="text-5xl md:text-6xl font-bold text-primary">{score.toFixed(2)}</p>
+                  <p className="text-muted-foreground mt-1">out of {quiz?.length} total marks</p>
+              </div>
+              <Alert>
                   <AlertTitle>Scoring Details</AlertTitle>
                   <AlertDescription>
                     Correct answers are worth 1 point. Incorrect answers have a negative marking of {NEGATIVE_MARKING_PER_QUESTION} points.

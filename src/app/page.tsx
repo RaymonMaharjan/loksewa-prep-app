@@ -10,7 +10,7 @@ export default function LoginPage() {
         data-ai-hint="people app"
         layout="fill"
         objectFit="cover"
-        className="z-0"
+        className="z-0 object-top"
       />
       <div className="absolute inset-0 bg-black/50 z-10" />
       <div className="relative z-20 w-full max-w-md">

@@ -1,9 +1,19 @@
 import { LoginForm } from '@/components/auth/login-form';
+import Image from 'next/image';
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-background">
-      <div className="w-full max-w-md">
+    <main className="relative flex min-h-screen flex-col items-center justify-center p-8">
+      <Image
+        src="https://placehold.co/1920x1080.png"
+        alt="Background"
+        data-ai-hint="study desk"
+        layout="fill"
+        objectFit="cover"
+        className="z-0"
+      />
+      <div className="absolute inset-0 bg-black/50 z-10" />
+      <div className="relative z-20 w-full max-w-md">
         <LoginForm />
       </div>
     </main>

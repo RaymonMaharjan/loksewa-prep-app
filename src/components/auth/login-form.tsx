@@ -108,44 +108,45 @@ export function LoginForm() {
             Sign in with Google
           </Button>
 
-          <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full">
-                    <Download className="mr-2 h-4 w-4" /> Install App
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                <DialogTitle>Install Loksewa Prep App</DialogTitle>
-                <DialogDescription>
-                    Follow the instructions for your device to install the app for the best experience.
-                </DialogDescription>
-                </DialogHeader>
-                <div className='space-y-4'>
-                    <div>
-                        <h3 className='font-semibold mb-2'>On Android (Chrome)</h3>
-                        <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
-                            <li>Tap the <MoreVertical className='inline h-4 w-4' /> menu button.</li>
-                            <li>Select <strong>Install app</strong> or <strong>Add to Home Screen</strong>.</li>
-                            <li>Follow the on-screen instructions.</li>
-                        </ol>
-                    </div>
-                     <div>
-                        <h3 className='font-semibold mb-2'>On iOS (Safari)</h3>
-                        <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
-                            <li>Tap the <Share className='inline h-4 w-4' /> Share button.</li>
-                            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
-                            <li>Confirm by tapping <strong>Add</strong>.</li>
-                        </ol>
-                    </div>
-                    {installPrompt && (
-                         <Button onClick={handleInstallClick} className='w-full'>
-                            <Download className="mr-2 h-4 w-4" /> Install Now
-                        </Button>
-                    )}
-                </div>
-            </DialogContent>
-           </Dialog>
+          {installPrompt && (
+            <Dialog>
+              <DialogTrigger asChild>
+                  <Button variant="secondary" className="w-full">
+                      <Download className="mr-2 h-4 w-4" /> Install App
+                  </Button>
+              </DialogTrigger>
+              <DialogContent>
+                  <DialogHeader>
+                  <DialogTitle>Install Loksewa Prep App</DialogTitle>
+                  <DialogDescription>
+                      Follow the instructions for your device to install the app for the best experience.
+                  </DialogDescription>
+                  </DialogHeader>
+                  <div className='space-y-4'>
+                      <div>
+                          <h3 className='font-semibold mb-2'>On Android/Desktop (Chrome)</h3>
+                          <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
+                              <li>Click the <Download className='inline h-4 w-4' /> button in the address bar.</li>
+                              <li>Select <strong>Install</strong>.</li>
+                          </ol>
+                      </div>
+                      <div>
+                          <h3 className='font-semibold mb-2'>On iOS (Safari)</h3>
+                          <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
+                              <li>Tap the <Share className='inline h-4 w-4' /> Share button.</li>
+                              <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+                              <li>Confirm by tapping <strong>Add</strong>.</li>
+                          </ol>
+                      </div>
+                      {installPrompt && (
+                          <Button onClick={handleInstallClick} className='w-full'>
+                              <Download className="mr-2 h-4 w-4" /> Install Now
+                          </Button>
+                      )}
+                  </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
       </CardContent>
     </Card>

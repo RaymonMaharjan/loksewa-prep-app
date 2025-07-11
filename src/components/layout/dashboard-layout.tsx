@@ -50,10 +50,61 @@ const menuItems = [
   { href: '/performance', label: 'Performance', icon: BarChart2 },
 ];
 
+const UserProfileMenu = () => {
+    const { user, signOut } = useAuth();
+    if (!user) return null;
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="w-full justify-start p-2 h-auto">
+                 <div className="flex justify-between items-center w-full">
+                    <div className="flex gap-2 items-center">
+                       <Avatar className="h-8 w-8">
+                         <AvatarImage src={user.photoURL || ''} data-ai-hint="profile avatar" alt={user.displayName || 'User'} />
+                         <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
+                       </Avatar>
+                       <div className="flex flex-col items-start group-data-[collapsible=icon]:hidden">
+                         <span className="text-sm font-medium">{user.displayName}</span>
+                         <span className="text-xs text-muted-foreground">{user.email}</span>
+                       </div>
+                    </div>
+                  </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 mb-2" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user.displayName}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                 <Link href="/profile" className='flex items-center gap-2 cursor-pointer'>
+                  <User className="h-4 w-4" /> Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/settings" className='flex items-center gap-2 cursor-pointer'>
+                  <Settings className="h-4 w-4" /> Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer">
+                <LogOut className="h-4 w-4" /> Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+    )
+}
+
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading, signOut } = useAuth();
+  const { user, loading } = useAuth();
 
   React.useEffect(() => {
     if (!loading && !user) {
@@ -99,49 +150,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-full justify-start p-2 h-auto">
-                 <div className="flex justify-between items-center w-full">
-                    <div className="flex gap-2 items-center">
-                       <Avatar className="h-8 w-8">
-                         <AvatarImage src={user.photoURL || ''} data-ai-hint="profile avatar" alt={user.displayName || 'User'} />
-                         <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
-                       </Avatar>
-                       <div className="flex flex-col items-start group-data-[collapsible=icon]:hidden">
-                         <span className="text-sm font-medium">{user.displayName}</span>
-                         <span className="text-xs text-muted-foreground">{user.email}</span>
-                       </div>
-                    </div>
-                  </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 mb-2" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.displayName}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {user.email}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                 <Link href="/profile" className='flex items-center gap-2 cursor-pointer'>
-                  <User className="h-4 w-4" /> Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/settings" className='flex items-center gap-2 cursor-pointer'>
-                  <Settings className="h-4 w-4" /> Settings
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 cursor-pointer">
-                <LogOut className="h-4 w-4" /> Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <UserProfileMenu />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>

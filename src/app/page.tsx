@@ -9,7 +9,7 @@ export default function LoginPage() {
         alt="Background"
         data-ai-hint="people app"
         layout="fill"
-        objectFit="contain"
+        objectFit="cover"
         className="z-0"
       />
       <div className="absolute inset-0 bg-black/50 z-10" />

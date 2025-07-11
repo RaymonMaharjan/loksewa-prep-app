@@ -4,12 +4,11 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LoksewaLogo } from '@/components/icons/loksewa-logo';
-import { CheckCircle, Zap, FlaskConical, BarChart, Wand, FileText, Star } from 'lucide-react';
+import { CheckCircle, Zap, FlaskConical, BarChart, Wand, FileText } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const features = [
   {
@@ -54,31 +53,6 @@ const subjects = [
     'MIS and Web Technologies',
     'Recent IT Trends',
 ];
-
-const testimonials = [
-    {
-        name: 'Sunita Sharma',
-        role: 'Aspiring IT Officer',
-        quote: 'The AI-generated study plan was a game-changer! It helped me focus my efforts and I cleared the exam on my first attempt.',
-        avatar: 'https://placehold.co/100x100.png',
-        hint: 'woman portrait',
-    },
-    {
-        name: 'Bikram Thapa',
-        role: 'Student',
-        quote: 'Being able to generate custom tests on my weak subjects made all the difference. The performance analytics showed me exactly where to improve.',
-        avatar: 'https://placehold.co/100x100.png',
-        hint: 'man portrait',
-    },
-     {
-        name: 'Anjali Gurung',
-        role: 'Recent Graduate',
-        quote: 'The daily quizzes kept me consistent with my practice. I highly recommend Loksewa Prep to anyone serious about passing the exam.',
-        avatar: 'https://placehold.co/100x100.png',
-        hint: 'woman smiling',
-    }
-]
-
 
 export default function LandingPage() {
     const { user, loading } = useAuth();
@@ -184,40 +158,6 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
-
-        {/* Testimonials Section */}
-        <section id="testimonials" className="py-20 md:py-28 bg-muted/50">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">What Our Users Say</h2>
-                    <p className="mt-4 text-muted-foreground">
-                       Thousands of aspirants trust Loksewa Prep. Here's what some of them have to say.
-                    </p>
-                </div>
-                <div className="mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3">
-                    {testimonials.map((testimonial) => (
-                        <div key={testimonial.name} className="flex flex-col justify-between rounded-lg border bg-card p-6 shadow-sm">
-                           <div>
-                                <div className="flex text-yellow-400 mb-4">
-                                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-current" />)}
-                                </div>
-                                <p className="text-muted-foreground italic">"{testimonial.quote}"</p>
-                           </div>
-                            <div className="mt-6 flex items-center gap-4">
-                                <Avatar>
-                                    <AvatarImage src={testimonial.avatar} data-ai-hint={testimonial.hint} />
-                                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <p className="font-semibold">{testimonial.name}</p>
-                                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
         
         {/* Final CTA */}
         <section className="py-20 md:py-28">
@@ -260,5 +200,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    

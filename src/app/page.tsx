@@ -4,11 +4,12 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LoksewaLogo } from '@/components/icons/loksewa-logo';
-import { CheckCircle, Zap, FlaskConical, BarChart, Calendar, FileText, Wand } from 'lucide-react';
+import { CheckCircle, Zap, FlaskConical, BarChart, Wand, FileText, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const features = [
   {
@@ -36,7 +37,47 @@ const features = [
     title: 'Performance Analytics',
     description: 'Visualize your progress over time with clear charts and performance tracking.',
   },
+  {
+      icon: CheckCircle,
+      title: 'Vast Question Bank',
+      description: 'Access thousands of questions across all major IT and general knowledge topics.'
+  }
 ];
+
+const subjects = [
+    'Computer Fundamentals',
+    'Object Oriented Programming',
+    'Data Structure & Algorithms',
+    'Database Management System',
+    'Computer Networks & Security',
+    'Software Engineering',
+    'MIS and Web Technologies',
+    'Recent IT Trends',
+];
+
+const testimonials = [
+    {
+        name: 'Sunita Sharma',
+        role: 'Aspiring IT Officer',
+        quote: 'The AI-generated study plan was a game-changer! It helped me focus my efforts and I cleared the exam on my first attempt.',
+        avatar: 'https://placehold.co/100x100.png',
+        hint: 'woman portrait',
+    },
+    {
+        name: 'Bikram Thapa',
+        role: 'Student',
+        quote: 'Being able to generate custom tests on my weak subjects made all the difference. The performance analytics showed me exactly where to improve.',
+        avatar: 'https://placehold.co/100x100.png',
+        hint: 'man portrait',
+    },
+     {
+        name: 'Anjali Gurung',
+        role: 'Recent Graduate',
+        quote: 'The daily quizzes kept me consistent with my practice. I highly recommend Loksewa Prep to anyone serious about passing the exam.',
+        avatar: 'https://placehold.co/100x100.png',
+        hint: 'woman smiling',
+    }
+]
 
 
 export default function LandingPage() {
@@ -67,7 +108,7 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32">
+        <section className="relative py-20 md:py-28">
             <div 
                 aria-hidden="true" 
                 className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20"
@@ -75,17 +116,28 @@ export default function LandingPage() {
                 <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
                 <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
             </div>
-            <div className="container mx-auto px-4 md:px-6 text-center">
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                    Your Ultimate AI Partner for Loksewa Exams
-                </h1>
-                <p className="mx-auto mt-6 max-w-[700px] text-muted-foreground md:text-xl">
-                    Ace your Loksewa IT Officer exam with AI-powered mock tests, personalized study plans, and detailed performance analytics.
-                </p>
-                <div className="mt-8 flex justify-center gap-4">
-                    <Button asChild size="lg">
-                        <Link href="/login">Start Preparing Now</Link>
-                    </Button>
+            <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div className="text-center md:text-left">
+                    <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+                        Your Ultimate AI Partner for Loksewa Exams
+                    </h1>
+                    <p className="mt-6 max-w-[600px] text-muted-foreground md:text-xl">
+                        Ace your Loksewa IT Officer exam with AI-powered mock tests, personalized study plans, and detailed performance analytics.
+                    </p>
+                    <div className="mt-8 flex justify-center md:justify-start">
+                        <Button asChild size="lg">
+                            <Link href="/login">Start Preparing Now</Link>
+                        </Button>
+                    </div>
+                </div>
+                 <div className="relative h-64 md:h-96">
+                    <Image 
+                        src="https://placehold.co/600x400.png"
+                        data-ai-hint="student studying computer"
+                        alt="Student studying for an exam" 
+                        fill
+                        className="object-contain rounded-lg"
+                    />
                 </div>
             </div>
         </section>
@@ -100,8 +152,8 @@ export default function LandingPage() {
                     </p>
                 </div>
                 <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {features.map((feature, index) => (
-                    <div key={index} className="flex flex-col items-start gap-4 rounded-lg border bg-card p-6 shadow-sm">
+                    {features.map((feature) => (
+                    <div key={feature.title} className="flex flex-col items-start gap-4 rounded-lg border bg-card p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                             <feature.icon className="h-6 w-6 text-primary" />
                         </div>
@@ -112,6 +164,76 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
+
+        {/* Subjects Section */}
+        <section id="subjects" className="py-20 md:py-28">
+            <div className="container mx-auto px-4 md:px-6">
+                 <div className="mx-auto max-w-2xl text-center">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Subjects We Cover</h2>
+                    <p className="mt-4 text-muted-foreground">
+                        Our question bank covers all the essential topics from the official IT Officer syllabus.
+                    </p>
+                </div>
+                 <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {subjects.map((subject) => (
+                        <div key={subject} className="flex items-center gap-3 rounded-lg border bg-card p-4 shadow-sm">
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                            <span className="font-medium">{subject}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="py-20 md:py-28 bg-muted/50">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="mx-auto max-w-2xl text-center">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">What Our Users Say</h2>
+                    <p className="mt-4 text-muted-foreground">
+                       Thousands of aspirants trust Loksewa Prep. Here's what some of them have to say.
+                    </p>
+                </div>
+                <div className="mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3">
+                    {testimonials.map((testimonial) => (
+                        <div key={testimonial.name} className="flex flex-col justify-between rounded-lg border bg-card p-6 shadow-sm">
+                           <div>
+                                <div className="flex text-yellow-400 mb-4">
+                                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-current" />)}
+                                </div>
+                                <p className="text-muted-foreground italic">"{testimonial.quote}"</p>
+                           </div>
+                            <div className="mt-6 flex items-center gap-4">
+                                <Avatar>
+                                    <AvatarImage src={testimonial.avatar} data-ai-hint={testimonial.hint} />
+                                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <p className="font-semibold">{testimonial.name}</p>
+                                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+        
+        {/* Final CTA */}
+        <section className="py-20 md:py-28">
+             <div className="container mx-auto px-4 md:px-6 text-center">
+                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Ready to Start Your Journey?</h2>
+                <p className="mx-auto mt-4 max-w-[600px] text-muted-foreground md:text-lg">
+                    Join thousands of successful candidates. Sign up now and get immediate access to all our preparation tools.
+                </p>
+                <div className="mt-8 flex justify-center">
+                    <Button asChild size="lg">
+                        <Link href="/login">Get Started for Free</Link>
+                    </Button>
+                </div>
+            </div>
+        </section>
+
       </main>
 
       <footer className="border-t py-6 md:py-8">
@@ -138,3 +260,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    

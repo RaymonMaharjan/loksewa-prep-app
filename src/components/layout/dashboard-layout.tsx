@@ -15,6 +15,7 @@ import {
   Wand,
   LogOut,
   Loader2,
+  Menu,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -156,10 +157,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <header className="flex h-14 items-center gap-4 border-b bg-card/50 px-4 md:px-6 sticky top-0 z-30">
           <SidebarTrigger className="md:hidden">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
-              <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
-            </Avatar>
+            <Menu />
             <span className="sr-only">Toggle Sidebar</span>
           </SidebarTrigger>
           <div className="flex-1">

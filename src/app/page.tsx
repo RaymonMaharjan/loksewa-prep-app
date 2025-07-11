@@ -5,9 +5,9 @@ export default function LoginPage() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center p-8">
       <Image
-        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1920"
+        src="https://images.unsplash.com/photo-1718816524223-35639b73a3c9?q=80&w=1920"
         alt="Background"
-        data-ai-hint="students technology"
+        data-ai-hint="people app"
         layout="fill"
         objectFit="cover"
         className="z-0"

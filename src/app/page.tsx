@@ -7,9 +7,9 @@ export default function LoginPage() {
       <Image
         src="/login-background.jpg"
         alt="Background"
-        data-ai-hint="people studying"
+        data-ai-hint="people app"
         layout="fill"
-        objectFit="cover"
+        objectFit="contain"
         className="z-0"
       />
       <div className="absolute inset-0 bg-black/50 z-10" />

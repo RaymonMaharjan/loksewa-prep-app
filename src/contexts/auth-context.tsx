@@ -54,20 +54,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-        <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-background">
+        <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-br from-primary/20 via-background to-background">
             <Image
                 src="https://placehold.co/1920x1080.png"
                 alt="Loading background"
                 data-ai-hint="futuristic tech abstract"
                 fill
-                className="object-cover z-0"
+                className="object-cover z-0 opacity-10"
                 priority
             />
-            <div className="absolute inset-0 bg-black/50 z-10"></div>
-            <div className="relative z-20 flex flex-col items-center justify-center text-center text-white">
-                <LoksewaLogo className="h-20 w-20 text-white mb-4" />
-                <Loader2 className="h-10 w-10 animate-spin text-white" />
-                <p className="mt-4 text-lg">Loading your experience...</p>
+            <div className="relative z-20 flex flex-col items-center justify-center text-center">
+                <LoksewaLogo className="h-20 w-20 text-primary mb-4" />
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <p className="mt-4 text-lg text-foreground">Loading your experience...</p>
             </div>
         </div>
     );

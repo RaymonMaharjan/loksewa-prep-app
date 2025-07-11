@@ -104,13 +104,14 @@ export default function LandingPage() {
                         </Button>
                     </div>
                 </div>
-                 <div className="relative h-64 md:h-96">
+                 <div className="flex items-center justify-center">
                     <Image 
                         src="https://placehold.co/600x400.png"
                         data-ai-hint="student studying computer"
                         alt="Student studying for an exam" 
-                        fill
-                        className="object-contain rounded-lg"
+                        width={600}
+                        height={400}
+                        className="rounded-lg shadow-2xl"
                     />
                 </div>
             </div>

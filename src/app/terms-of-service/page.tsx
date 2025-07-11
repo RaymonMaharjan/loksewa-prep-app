@@ -10,7 +10,7 @@ export default function TermsOfServicePage() {
         <div className="w-full max-w-4xl">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4">
             <ArrowLeft className="h-4 w-4" />
-            Back to Login
+            Back to Home
         </Link>
         <Card>
             <CardHeader>

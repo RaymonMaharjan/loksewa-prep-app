@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.error("Error signing out", error);
     }
@@ -56,8 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return (
         <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-background">
             <Image
-                src="/login-background.jpg"
+                src="https://placehold.co/1920x1080.png"
                 alt="Loading background"
+                data-ai-hint="futuristic tech abstract"
                 fill
                 className="object-cover z-0"
                 priority

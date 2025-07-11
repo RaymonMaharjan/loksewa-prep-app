@@ -113,12 +113,6 @@ export function LoginForm() {
           </Dialog>
         )}
       </CardContent>
-      <CardFooter className="flex flex-col items-center justify-center text-xs text-muted-foreground gap-1">
-        <div className="text-center">
-            <p>Developed by Raymond Maharjan</p>
-            <p>&copy; {new Date().getFullYear()} Loksewa Prep. All rights reserved.</p>
-        </div>
-      </CardFooter>
     </Card>
   );
 }

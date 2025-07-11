@@ -27,10 +27,15 @@ export default function LoginPage() {
             </div>
         </main>
         <footer className="py-4 px-8 text-center text-xs text-muted-foreground">
-             <div className="flex justify-center gap-4">
+             <div className="flex justify-center items-center gap-x-4 gap-y-2 flex-wrap">
+                <span>Developed by Raymond Maharjan</span>
+                <span className="hidden sm:inline">|</span>
+                <span>&copy; {new Date().getFullYear()} Loksewa Prep</span>
+                <span className="hidden sm:inline">|</span>
                 <Link href="/terms-of-service" className="hover:text-primary hover:underline">
                     Terms of Service
                 </Link>
+                <span className="hidden sm:inline">|</span>
                 <Link href="/privacy-policy" className="hover:text-primary hover:underline">
                     Privacy Policy
                 </Link>

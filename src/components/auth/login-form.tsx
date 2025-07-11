@@ -113,15 +113,7 @@ export function LoginForm() {
           </Dialog>
         )}
       </CardContent>
-      <CardFooter className="flex flex-col items-center justify-center text-xs text-muted-foreground gap-3">
-        <div className="flex gap-4">
-            <Link href="/terms-of-service" className="hover:text-primary hover:underline">
-                Terms of Service
-            </Link>
-            <Link href="/privacy-policy" className="hover:text-primary hover:underline">
-                Privacy Policy
-            </Link>
-        </div>
+      <CardFooter className="flex flex-col items-center justify-center text-xs text-muted-foreground gap-1">
         <div className="text-center">
             <p>Developed by Raymond Maharjan</p>
             <p>&copy; {new Date().getFullYear()} Loksewa Prep. All rights reserved.</p>

@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import Link from 'next/link';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -38,124 +39,93 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     />
     <path
       fill="#1976D2"
-      d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C42.01,35.638,44,30.138,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+      d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.371,34.221,44,29.561,44,24C44,22.659,43.862,21.35,43.611,20.083z"
     />
   </svg>
 );
 
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
-    platform: string;
-  }>;
-  prompt(): Promise<void>;
-}
-
 export function LoginForm() {
   const { signInWithGoogle, loading } = useAuth();
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
+    const handler = (e: Event) => {
       e.preventDefault();
-      setInstallPrompt(e as BeforeInstallPromptEvent);
+      setInstallPrompt(e);
     };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  const handleLogin = async () => {
-    setIsLoggingIn(true);
-    await signInWithGoogle();
-    setIsLoggingIn(false);
+  const handleSignIn = async () => {
+    setIsSigningIn(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error(error);
+      setIsSigningIn(false);
+    }
   };
   
-  const handleInstallClick = async () => {
-    if (!installPrompt) return;
-    await installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
+  const handleInstallClick = () => {
+    if (installPrompt) {
+      installPrompt.prompt();
     }
-    setInstallPrompt(null);
   };
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
-        <div className="flex justify-center items-center mb-4">
-            <LoksewaLogo className="h-14 w-14 text-primary" />
-        </div>
-        <CardTitle className="text-2xl font-bold">Loksewa Prep</CardTitle>
+        <LoksewaLogo className="w-16 h-16 mx-auto text-primary" />
+        <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
         <CardDescription>Sign in to start your preparation journey.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <Button variant="outline" className="w-full" onClick={handleLogin} disabled={loading || isLoggingIn}>
-            {loading || isLoggingIn ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
+      <CardContent className="grid gap-4">
+        <Button onClick={handleSignIn} variant="outline" className="w-full" disabled={isSigningIn}>
+          {isSigningIn ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <>
               <GoogleIcon className="mr-2" />
-            )}
-            Sign in with Google
-          </Button>
-
-          {installPrompt && (
-            <Dialog>
-              <DialogTrigger asChild>
-                  <Button variant="secondary" className="w-full">
-                      <Download className="mr-2 h-4 w-4" /> Install App
-                  </Button>
-              </DialogTrigger>
-              <DialogContent>
-                  <DialogHeader>
-                  <DialogTitle>Install Loksewa Prep App</DialogTitle>
-                  <DialogDescription>
-                      Follow the instructions for your device to install the app for the best experience.
-                  </DialogDescription>
-                  </DialogHeader>
-                  <div className='space-y-4'>
-                      <div>
-                          <h3 className='font-semibold mb-2'>On Android/Desktop (Chrome)</h3>
-                          <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
-                              <li>Click the <Download className='inline h-4 w-4' /> button in the address bar.</li>
-                              <li>Select <strong>Install</strong>.</li>
-                          </ol>
-                      </div>
-                      <div>
-                          <h3 className='font-semibold mb-2'>On iOS (Safari)</h3>
-                          <ol className='list-decimal list-inside text-sm text-muted-foreground space-y-1'>
-                              <li>Tap the <Share className='inline h-4 w-4' /> Share button.</li>
-                              <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
-                              <li>Confirm by tapping <strong>Add</strong>.</li>
-                          </ol>
-                      </div>
-                      {installPrompt && (
-                          <Button onClick={handleInstallClick} className='w-full'>
-                              <Download className="mr-2 h-4 w-4" /> Install Now
-                          </Button>
-                      )}
-                  </div>
-              </DialogContent>
-            </Dialog>
+              Sign in with Google
+            </>
           )}
-        </div>
+        </Button>
+
+        {installPrompt && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary" className="w-full">
+                <Download className="mr-2 h-4 w-4" />
+                Install App
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Install Loksewa Prep</DialogTitle>
+                <DialogDescription>
+                  For the best experience, install the app on your device. This allows for offline access and a native app feel.
+                </DialogDescription>
+              </DialogHeader>
+              <Button onClick={handleInstallClick}>Install Now</Button>
+            </DialogContent>
+          </Dialog>
+        )}
       </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <p className="text-xs text-muted-foreground text-center w-full">
-          Developed by Raymond Maharjan
-        </p>
-        <p className="text-xs text-muted-foreground text-center w-full">
-            &copy; {new Date().getFullYear()} Loksewa Prep. All rights reserved.
-        </p>
+      <CardFooter className="flex flex-col items-center justify-center text-xs text-muted-foreground gap-3">
+        <div className="flex gap-4">
+            <Link href="/terms-of-service" className="hover:text-primary hover:underline">
+                Terms of Service
+            </Link>
+            <Link href="/privacy-policy" className="hover:text-primary hover:underline">
+                Privacy Policy
+            </Link>
+        </div>
+        <div className="text-center">
+            <p>Developed by Raymond Maharjan</p>
+            <p>&copy; {new Date().getFullYear()} Loksewa Prep. All rights reserved.</p>
+        </div>
       </CardFooter>
     </Card>
   );

@@ -16,6 +16,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Link from 'next/link';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -48,6 +50,7 @@ export function LoginForm() {
   const { signInWithGoogle, loading } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -82,7 +85,29 @@ export function LoginForm() {
         <CardDescription>Sign in to start your preparation journey.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <Button onClick={handleSignIn} variant="outline" className="w-full" disabled={isSigningIn}>
+        <div className="flex items-start space-x-2.5 px-1">
+            <Checkbox 
+                id="terms" 
+                checked={agreedToTerms} 
+                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                aria-label="Agree to terms and conditions"
+            />
+            <div className="grid gap-1.5 leading-none">
+                <Label htmlFor="terms" className="text-sm font-normal text-muted-foreground">
+                    I agree to the{" "}
+                    <Link href="/terms-of-service" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
+                        Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy-policy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
+                        Privacy Policy
+                    </Link>
+                    .
+                </Label>
+            </div>
+        </div>
+
+        <Button onClick={handleSignIn} variant="outline" className="w-full" disabled={isSigningIn || !agreedToTerms}>
           {isSigningIn ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

@@ -89,17 +89,17 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-sm bg-black/30 backdrop-blur-lg border-white/20 text-white">
+    <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
         <div className="flex justify-center items-center mb-4">
-            <LoksewaLogo className="h-14 w-14 text-white" />
+            <LoksewaLogo className="h-14 w-14 text-primary" />
         </div>
         <CardTitle className="text-2xl font-bold">Loksewa Prep</CardTitle>
-        <CardDescription className="text-white/80">Sign in to start your preparation journey.</CardDescription>
+        <CardDescription>Sign in to start your preparation journey.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <Button variant="outline" className="w-full bg-white/90 text-slate-800 hover:bg-white" onClick={handleLogin} disabled={loading || isLoggingIn}>
+          <Button variant="outline" className="w-full" onClick={handleLogin} disabled={loading || isLoggingIn}>
             {loading || isLoggingIn ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -110,7 +110,7 @@ export function LoginForm() {
 
           <Dialog>
             <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full bg-white/20 hover:bg-white/30 text-white">
+                <Button variant="secondary" className="w-full">
                     <Download className="mr-2 h-4 w-4" /> Install App
                 </Button>
             </DialogTrigger>

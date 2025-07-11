@@ -149,9 +149,12 @@ export function LoginForm() {
           )}
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex-col gap-2">
         <p className="text-xs text-muted-foreground text-center w-full">
           Developed by Raymond Maharjan
+        </p>
+        <p className="text-xs text-muted-foreground text-center w-full">
+            &copy; {new Date().getFullYear()} Loksewa Prep. All rights reserved.
         </p>
       </CardFooter>
     </Card>

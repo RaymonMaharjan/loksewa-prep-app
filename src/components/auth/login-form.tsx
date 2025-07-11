@@ -2,7 +2,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Loader2, Download, Share, MoreVertical } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useState, useEffect } from 'react';
@@ -149,6 +149,11 @@ export function LoginForm() {
           )}
         </div>
       </CardContent>
+      <CardFooter>
+        <p className="text-xs text-muted-foreground text-center w-full">
+          Developed by Raymond Maharjan
+        </p>
+      </CardFooter>
     </Card>
   );
 }

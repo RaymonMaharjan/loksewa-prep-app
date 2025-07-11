@@ -106,7 +106,7 @@ export default function LandingPage() {
                 </div>
                  <div className="relative h-64 md:h-96">
                     <Image 
-                        src="https://placehold.co/600x400.png"
+                        src="public/dbeb6909-b451-42f7-ab29-c91b62e6134d.png"
                         data-ai-hint="student studying computer"
                         alt="Student studying for an exam" 
                         fill

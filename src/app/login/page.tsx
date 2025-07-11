@@ -8,6 +8,7 @@ import { LoginForm } from '@/components/auth/login-form';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { LoksewaLogo } from '@/components/icons/loksewa-logo';
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
@@ -36,6 +37,21 @@ export default function LoginPage() {
                 <LoginForm />
             </div>
         </main>
+         <footer className="py-4 px-8 text-center">
+            <div className="flex justify-center items-center gap-x-4 gap-y-2 flex-wrap text-sm text-muted-foreground">
+                <span>Developed by Raymond Maharjan</span>
+                <span className="hidden sm:inline">|</span>
+                <span>&copy; {new Date().getFullYear()} Loksewa Prep</span>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/terms-of-service" className="hover:text-primary hover:underline">
+                    Terms of Service
+                </Link>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/privacy-policy" className="hover:text-primary hover:underline">
+                    Privacy Policy
+                </Link>
+            </div>
+        </footer>
     </div>
   );
 }

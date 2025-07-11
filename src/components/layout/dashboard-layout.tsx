@@ -15,7 +15,6 @@ import {
   Wand,
   LogOut,
   Loader2,
-  Users,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -49,7 +48,6 @@ const menuItems = [
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },
   { href: '/study-plan', label: 'Study Plan', icon: Wand },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
-  { href: '/content-management', label: 'Content Management', icon: Users },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

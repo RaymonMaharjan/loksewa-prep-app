@@ -48,6 +48,12 @@ export default function DailyQuizPage() {
   const [isQuizAvailable, setIsQuizAvailable] = useState(false);
   const [nextQuizTime, setNextQuizTime] = useState('');
   const { addTestResult } = useLoksewa();
+  const [resultsSummary, setResultsSummary] = useState({
+      attempted: 0,
+      unattempted: 0,
+      correct: 0,
+      incorrect: 0
+  });
 
   useEffect(() => {
     const checkQuizAvailability = () => {
@@ -124,15 +130,30 @@ export default function DailyQuizPage() {
   const handleSubmit = () => {
     if (!test) return;
     let finalScore = 0;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let attemptedCount = 0;
+
     test.forEach((q, index) => {
       if (selectedAnswers[index]) {
+        attemptedCount++;
         if (selectedAnswers[index] === q.correctAnswer) {
           finalScore++;
+          correctCount++;
         } else {
           finalScore -= NEGATIVE_MARKING_PER_QUESTION;
+          incorrectCount++;
         }
       }
     });
+
+    setResultsSummary({
+        attempted: attemptedCount,
+        unattempted: test.length - attemptedCount,
+        correct: correctCount,
+        incorrect: incorrectCount,
+    });
+
     const finalClampedScore = Math.max(0, finalScore);
     setScore(finalClampedScore);
     setIsSubmitted(true);
@@ -194,6 +215,26 @@ export default function DailyQuizPage() {
                   <p className="text-5xl md:text-6xl font-bold text-primary">{score.toFixed(2)}</p>
                   <p className="text-muted-foreground mt-1">out of {test?.length} total marks</p>
               </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  <div className="p-3 bg-muted rounded-lg">
+                      <p className="text-sm text-muted-foreground">Attempted</p>
+                      <p className="text-2xl font-bold">{resultsSummary.attempted}</p>
+                  </div>
+                  <div className="p-3 bg-green-500/10 rounded-lg">
+                      <p className="text-sm text-green-700 dark:text-green-400">Correct</p>
+                      <p className="text-2xl font-bold text-green-600 dark:text-green-500">{resultsSummary.correct}</p>
+                  </div>
+                  <div className="p-3 bg-red-500/10 rounded-lg">
+                      <p className="text-sm text-red-700 dark:text-red-400">Incorrect</p>
+                      <p className="text-2xl font-bold text-red-600 dark:text-red-500">{resultsSummary.incorrect}</p>
+                  </div>
+                  <div className="p-3 bg-muted rounded-lg">
+                      <p className="text-sm text-muted-foreground">Unattempted</p>
+                      <p className="text-2xl font-bold">{resultsSummary.unattempted}</p>
+                  </div>
+              </div>
+
               <Alert>
                   <AlertTitle>Scoring Details</AlertTitle>
                   <AlertDescription>

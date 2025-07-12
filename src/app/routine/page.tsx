@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BookCheck, Loader2, Sparkles, AlertCircle } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,25 @@ import { useToast } from '@/hooks/use-toast';
 import { generateDailyRoutine, type GenerateDailyRoutineOutput } from '@/ai/flows/generate-daily-routine';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
+const LOCAL_STORAGE_KEY = 'loksewaDailyRoutine';
+
 export default function RoutinePage() {
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
     const [generatedRoutine, setGeneratedRoutine] = useState<GenerateDailyRoutineOutput | null>(null);
+
+    useEffect(() => {
+        try {
+            const savedRoutine = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (savedRoutine) {
+                setGeneratedRoutine(JSON.parse(savedRoutine));
+            }
+        } catch (error) {
+            console.error("Failed to load routine from localStorage", error);
+            // If there's an error parsing, clear the invalid data.
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,6 +52,7 @@ export default function RoutinePage() {
         try {
             const result = await generateDailyRoutine({ studyHours });
             setGeneratedRoutine(result);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(result));
         } catch (error) {
             console.error("Failed to generate routine", error);
             toast({
@@ -48,6 +64,11 @@ export default function RoutinePage() {
             setIsLoading(false);
         }
     };
+    
+    const handleGenerateNew = () => {
+        setGeneratedRoutine(null);
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
 
     const renderForm = () => (
         <div className="flex items-center justify-center h-full">
@@ -109,7 +130,7 @@ export default function RoutinePage() {
             </div>
 
             <div className="text-center pt-4">
-                <Button onClick={() => setGeneratedRoutine(null)}>
+                <Button onClick={handleGenerateNew}>
                     <Sparkles className="mr-2 h-4 w-4" /> Generate a New Routine
                 </Button>
             </div>

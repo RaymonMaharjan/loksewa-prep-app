@@ -17,6 +17,7 @@ import {
   Loader2,
   Menu,
   BookCheck,
+  Globe,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -50,6 +51,7 @@ const menuItems = [
   { href: '/mock-test', label: 'Mock Test', icon: FileText },
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },
   { href: '/study-plan', label: 'Study Plan', icon: Wand },
+  { href: '/gk-iq', label: 'GK & IQ', icon: Globe },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
 ];
 
@@ -140,7 +142,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>

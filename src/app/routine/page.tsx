@@ -1,7 +1,7 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import { BookCheck, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { BookCheck, Loader2, Sparkles } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,8 +10,24 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { generateDailyRoutine, type GenerateDailyRoutineOutput } from '@/ai/flows/generate-daily-routine';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const LOCAL_STORAGE_KEY = 'loksewaDailyRoutine';
+
+const syllabusTopics = [
+    'Computer Fundamentals',
+    'Procedural and Object Oriented Programming',
+    'Data Structure and Algorithms',
+    'Microprocessors and Computer Architecture',
+    'Operating Systems',
+    'Database Management System',
+    'Computer Networks and Security',
+    'Software Engineering',
+    'MIS and Web Technologies',
+    'Recent IT Trends and Terminology',
+    'Constitution of Nepal, Acts, Rules and IT Policy',
+];
 
 export default function RoutinePage() {
     const { toast } = useToast();
@@ -26,7 +42,6 @@ export default function RoutinePage() {
             }
         } catch (error) {
             console.error("Failed to load routine from localStorage", error);
-            // If there's an error parsing, clear the invalid data.
             localStorage.removeItem(LOCAL_STORAGE_KEY);
         }
     }, []);
@@ -38,6 +53,7 @@ export default function RoutinePage() {
 
         const formData = new FormData(e.currentTarget);
         const studyHours = parseInt(formData.get('study-hours') as string, 10);
+        const weakSubjects = syllabusTopics.filter(topic => formData.has(topic));
 
         if (isNaN(studyHours) || studyHours <= 0) {
             toast({
@@ -50,7 +66,7 @@ export default function RoutinePage() {
         }
 
         try {
-            const result = await generateDailyRoutine({ studyHours });
+            const result = await generateDailyRoutine({ studyHours, weakSubjects });
             setGeneratedRoutine(result);
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(result));
         } catch (error) {
@@ -81,11 +97,26 @@ export default function RoutinePage() {
                     <CardDescription>Get a personalized, AI-generated study plan for your day.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="study-hours">How many hours can you study today?</Label>
                             <Input name="study-hours" id="study-hours" type="number" placeholder="e.g., 3" min="1" max="12" required />
                         </div>
+
+                        <div className="space-y-2">
+                            <Label>Any weak subjects to focus on? (Optional)</Label>
+                            <ScrollArea className="h-48 w-full rounded-md border p-4">
+                                <div className="space-y-3">
+                                    {syllabusTopics.map((topic) => (
+                                        <div key={topic} className="flex items-start space-x-2">
+                                            <Checkbox id={topic} name={topic} />
+                                            <Label htmlFor={topic} className="font-normal cursor-pointer leading-tight">{topic}</Label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </ScrollArea>
+                        </div>
+                        
                         <Button type="submit" className="w-full" disabled={isLoading}>
                             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <> <Sparkles className="mr-2 h-4 w-4" /> Generate Routine </>}
                         </Button>

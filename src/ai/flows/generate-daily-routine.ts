@@ -28,7 +28,7 @@ const fullSyllabus = `
 
 const GenerateDailyRoutineInputSchema = z.object({
   studyHours: z.number().positive().describe('The number of hours the user can study today.'),
-  weakSubjects: z.array(z.string()).optional().describe('A list of subjects the user feels they are weakest in.'),
+  weakSubjects: z.array(z.string()).optional().describe('An optional list of subjects the user feels they are weakest in.'),
 });
 export type GenerateDailyRoutineInput = z.infer<typeof GenerateDailyRoutineInputSchema>;
 
@@ -62,11 +62,11 @@ Create a realistic and effective study routine for today based on the user's inp
 User's Inputs:
 - Available Study Hours Today: {{studyHours}}
 {{#if weakSubjects}}
-- Weakest Subjects: {{#each weakSubjects}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Weakest Subjects to Focus On: {{#each weakSubjects}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/if}}
 
 Instructions:
-1.  Select 1-3 subjects from the syllabus to be the main focus for today. Prioritize the user's weak subjects if provided.
+1.  Select 1-3 subjects from the syllabus to be the main focus for today. If the user has provided weak subjects, you MUST prioritize those in your selection.
 2.  Break down the available study hours into specific, actionable tasks.
 3.  Each task should have a suggested time allocation and a clear goal (e.g., "Review OSI model layers", "Take a 10-question quiz on 'Database Normalization'").
 4.  Generate a short, motivational tip to keep the student inspired.

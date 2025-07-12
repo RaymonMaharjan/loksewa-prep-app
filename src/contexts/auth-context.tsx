@@ -54,15 +54,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-        <div className="relative flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-br from-primary/20 via-background to-background">
-            <Image
-                src="https://placehold.co/1920x1080.png"
-                alt="Loading background"
-                data-ai-hint="futuristic tech abstract"
-                fill
-                className="object-cover z-0 opacity-10"
-                priority
-            />
+        <div 
+            className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('https://placehold.co/1920x1080.png')",
+            }}
+            data-ai-hint="futuristic tech abstract"
+        >
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center text-center">
                 <LoksewaLogo className="h-20 w-20 text-primary mb-4" />
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />

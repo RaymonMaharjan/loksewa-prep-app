@@ -73,6 +73,8 @@ You will generate a quiz with the specified number of questions based on the use
 
 When a user selects a main topic, you must GO DEEP into that topic by creating questions from its specific sub-topics listed in the syllabus above. Generate specific, high-quality multiple-choice questions. Ensure each question has four plausible options and one correct answer. Each time this prompt is called, you must generate a new and unique set of questions.
 
+Whenever a question or answer contains a date, you MUST provide it in both Bikram Sambat (B.S.) and Anno Domini (A.D.) formats (e.g., "2079 B.S. (2023 A.D.)").
+
 User's Selected Topics:
 {{#each topics}}
 - {{{this}}}

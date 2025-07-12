@@ -16,14 +16,14 @@ const navLinks = [
 export function LandingHeader() {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
-      <Link href="/" className="flex items-center justify-center">
+      <Link href="/" className="flex items-center justify-center mr-auto">
         <LoksewaLogo className="h-6 w-6 mr-2" />
         <span className="font-bold">Loksewa Prep</span>
       </Link>
       <nav className="ml-auto hidden gap-4 sm:gap-6 lg:flex">
         {/* Intentionally empty for now, can add nav links later */}
       </nav>
-       <div className="ml-auto flex items-center gap-2">
+       <div className="hidden items-center gap-2 md:flex">
          <ModeToggle />
         <Link href="/login" className={buttonVariants({ variant: 'outline' })}>
           Sign In
@@ -35,18 +35,26 @@ export function LandingHeader() {
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="ml-4 lg:hidden">
+          <Button variant="outline" size="icon" className="ml-4 md:hidden">
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
           <div className="grid gap-4 p-4">
-            <Link href="/" className="flex items-center justify-center">
+            <Link href="/" className="flex items-center justify-center mb-4">
                 <LoksewaLogo className="h-6 w-6 mr-2" />
                 <span className="font-bold">Loksewa Prep</span>
             </Link>
-            {/* Can add mobile nav links here */}
+            <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'w-full' })}>
+                Sign In
+            </Link>
+            <Link href="/login" className={buttonVariants({className: 'w-full'})}>
+                Get Started
+            </Link>
+            <div className="mt-4">
+              <ModeToggle />
+            </div>
           </div>
         </SheetContent>
       </Sheet>

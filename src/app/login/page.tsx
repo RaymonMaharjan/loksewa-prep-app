@@ -19,7 +19,7 @@ export default function LoginPage() {
     }
   }, [user, loading, router]);
 
-  if (loading) {
+  if (loading || (!loading && user)) {
     return (
         <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"

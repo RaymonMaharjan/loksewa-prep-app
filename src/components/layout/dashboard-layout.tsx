@@ -113,7 +113,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (!loading && !user) {
-      router.push('/');
+      router.push('/login');
     }
   }, [user, loading, router]);
   
@@ -129,12 +129,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <LoksewaLogo className="w-8 h-8 text-primary" />
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">Loksewa Prep</h2>
             </div>
-          </div>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>

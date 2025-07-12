@@ -130,7 +130,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={32} height={32} />
+            <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={40} height={40} />
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">Loksewa Prep</h2>
             </div>

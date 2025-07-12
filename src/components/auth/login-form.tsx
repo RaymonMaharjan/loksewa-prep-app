@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Loader2, Download, Share, MoreVertical } from 'lucide-react';
+import { Loader2, Download } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useState, useEffect } from 'react';
 import { LoksewaLogo } from '../icons/loksewa-logo';
@@ -46,7 +46,7 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export function LoginForm() {
+export function LoginPageContent() {
   const { signInWithGoogle, loading } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
@@ -78,66 +78,85 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader className="text-center">
-        <LoksewaLogo className="w-16 h-16 mx-auto text-primary" />
-        <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
-        <CardDescription>Sign in to start your preparation journey.</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className="flex items-start space-x-2.5 px-1">
-            <Checkbox 
-                id="terms" 
-                checked={agreedToTerms} 
-                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
-                aria-label="Agree to terms and conditions"
-            />
-            <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="terms" className="text-sm font-normal text-muted-foreground">
-                    I agree to the{" "}
-                    <Link href="/terms-of-service" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
-                        Terms of Service
-                    </Link>{" "}
-                    and{" "}
-                    <Link href="/privacy-policy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
-                        Privacy Policy
-                    </Link>
-                    .
-                </Label>
-            </div>
-        </div>
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-background to-secondary">
+        <main className="flex-1 flex flex-col items-center justify-center p-8">
+          <Card className="w-full max-w-sm">
+            <CardHeader className="text-center">
+              <LoksewaLogo className="w-16 h-16 mx-auto text-primary" />
+              <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
+              <CardDescription>Sign in to start your preparation journey.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="flex items-start space-x-2.5 px-1">
+                  <Checkbox 
+                      id="terms" 
+                      checked={agreedToTerms} 
+                      onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                      aria-label="Agree to terms and conditions"
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                      <Label htmlFor="terms" className="text-sm font-normal text-muted-foreground">
+                          I agree to the{" "}
+                          <Link href="/terms-of-service" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
+                              Terms of Service
+                          </Link>{" "}
+                          and{" "}
+                          <Link href="/privacy-policy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">
+                              Privacy Policy
+                          </Link>
+                          .
+                      </Label>
+                  </div>
+              </div>
 
-        <Button onClick={handleSignIn} variant="outline" className="w-full" disabled={isSigningIn || !agreedToTerms}>
-          {isSigningIn ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <>
-              <GoogleIcon className="mr-2" />
-              Sign in with Google
-            </>
-          )}
-        </Button>
-
-        {installPrompt && (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="secondary" className="w-full">
-                <Download className="mr-2 h-4 w-4" />
-                Install App
+              <Button onClick={handleSignIn} variant="outline" className="w-full" disabled={isSigningIn || loading || !agreedToTerms}>
+                {isSigningIn ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <GoogleIcon className="mr-2" />
+                    Sign in with Google
+                  </>
+                )}
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Install Loksewa Prep</DialogTitle>
-                <DialogDescription>
-                  For the best experience, install the app on your device. This allows for offline access and a native app feel.
-                </DialogDescription>
-              </DialogHeader>
-              <Button onClick={handleInstallClick}>Install Now</Button>
-            </DialogContent>
-          </Dialog>
-        )}
-      </CardContent>
-    </Card>
+
+              {installPrompt && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary" className="w-full">
+                      <Download className="mr-2 h-4 w-4" />
+                      Install App
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Install Loksewa Prep</DialogTitle>
+                      <DialogDescription>
+                        For the best experience, install the app on your device. This allows for offline access and a native app feel.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Button onClick={handleInstallClick}>Install Now</Button>
+                  </DialogContent>
+                </Dialog>
+              )}
+            </CardContent>
+          </Card>
+        </main>
+         <footer className="py-4 px-8 text-center">
+            <div className="flex justify-center items-center gap-x-4 gap-y-2 flex-wrap text-sm text-muted-foreground">
+                <span>Developed by Raymond Maharjan</span>
+                <span className="hidden sm:inline">|</span>
+                <span>&copy; {new Date().getFullYear()} Loksewa Prep</span>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/terms-of-service" className="hover:text-primary hover:underline">
+                    Terms of Service
+                </Link>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/privacy-policy" className="hover:text-primary hover:underline">
+                    Privacy Policy
+                </Link>
+            </div>
+        </footer>
+    </div>
   );
 }

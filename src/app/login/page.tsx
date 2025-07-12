@@ -4,54 +4,44 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
-import { LoginForm } from '@/components/auth/login-form';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { LoginPageContent } from '@/components/auth/login-form';
+import { Loader2 } from 'lucide-react';
 import { LoksewaLogo } from '@/components/icons/loksewa-logo';
+
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // Wait until the loading is complete before checking for a user
     if (!loading && user) {
       router.push('/dashboard');
     }
   }, [user, loading, router]);
 
+  if (loading) {
+    return (
+        <div 
+            className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('https://placehold.co/600x400.png')",
+            }}
+            data-ai-hint="futuristic tech abstract"
+        >
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
+            <div className="relative z-20 flex flex-col items-center justify-center text-center">
+                <LoksewaLogo className="h-20 w-20 text-primary mb-4" />
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <p className="mt-4 text-lg text-foreground">Loading your experience...</p>
+            </div>
+        </div>
+    );
+  }
+
   // If loading is finished and there's no user, show the login form.
-  return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-background to-secondary">
-        <header className="absolute top-0 left-0 p-4">
-             <Button variant="ghost" asChild>
-                <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground">
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Home
-                </Link>
-             </Button>
-        </header>
-        <main className="flex-1 flex flex-col items-center justify-center p-8">
-            <div className="w-full max-w-sm">
-                <LoginForm />
-            </div>
-        </main>
-         <footer className="py-4 px-8 text-center">
-            <div className="flex justify-center items-center gap-x-4 gap-y-2 flex-wrap text-sm text-muted-foreground">
-                <span>Developed by Raymond Maharjan</span>
-                <span className="hidden sm:inline">|</span>
-                <span>&copy; {new Date().getFullYear()} Loksewa Prep</span>
-                <span className="hidden sm:inline">|</span>
-                <Link href="/terms-of-service" className="hover:text-primary hover:underline">
-                    Terms of Service
-                </Link>
-                <span className="hidden sm:inline">|</span>
-                <Link href="/privacy-policy" className="hover:text-primary hover:underline">
-                    Privacy Policy
-                </Link>
-            </div>
-        </footer>
-    </div>
-  );
+  if (!loading && !user) {
+    return <LoginPageContent />;
+  }
+
+  return null;
 }

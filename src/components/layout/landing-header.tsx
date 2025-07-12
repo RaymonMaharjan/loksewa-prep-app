@@ -33,31 +33,31 @@ export function LandingHeader() {
         </Link>
       </div>
 
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="ml-4 md:hidden">
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <div className="grid gap-4 p-4">
-            <Link href="/" className="flex items-center justify-center mb-4">
-                <LoksewaLogo className="h-6 w-6 mr-2" />
-                <span className="font-bold">Loksewa Prep</span>
-            </Link>
-            <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'w-full' })}>
-                Sign In
-            </Link>
-            <Link href="/login" className={buttonVariants({className: 'w-full'})}>
-                Get Started
-            </Link>
-            <div className="mt-4">
-              <ModeToggle />
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet>
+       <div className="flex items-center gap-2 md:hidden">
+         <ModeToggle />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <div className="grid gap-4 p-4">
+                <Link href="/" className="flex items-center justify-center mb-4">
+                    <LoksewaLogo className="h-6 w-6 mr-2" />
+                    <span className="font-bold">Loksewa Prep</span>
+                </Link>
+                <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'w-full' })}>
+                    Sign In
+                </Link>
+                <Link href="/login" className={buttonVariants({className: 'w-full'})}>
+                    Get Started
+                </Link>
+              </div>
+            </SheetContent>
+          </Sheet>
+       </div>
     </header>
   );
 }

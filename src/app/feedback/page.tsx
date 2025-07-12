@@ -12,6 +12,7 @@ import { Loader2, Send } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/contexts/auth-context';
+import Link from 'next/link';
 
 export default function FeedbackPage() {
     const { toast } = useToast();
@@ -104,6 +105,12 @@ export default function FeedbackPage() {
                         </form>
                     </CardContent>
                 </Card>
+
+                 <div className="text-center mt-4">
+                    <Button variant="link" asChild>
+                        <Link href="/admin/feedback">View Submitted Feedback (Admin)</Link>
+                    </Button>
+                </div>
             </div>
         </DashboardLayout>
     );

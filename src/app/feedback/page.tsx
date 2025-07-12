@@ -14,16 +14,11 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/contexts/auth-context';
 import Link from 'next/link';
 
-// This must match the admin list in /admin/feedback/page.tsx
-const ADMIN_EMAILS = ['raymondmaharjan65@gmail.com'];
-
 export default function FeedbackPage() {
     const { toast } = useToast();
     const { user } = useAuth();
     const [feedback, setFeedback] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-    const isUserAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -110,14 +105,6 @@ export default function FeedbackPage() {
                         </form>
                     </CardContent>
                 </Card>
-
-                 {isUserAdmin && (
-                    <div className="text-center mt-4">
-                        <Button variant="link" asChild>
-                            <Link href="/admin/feedback">View Submitted Feedback (Admin)</Link>
-                        </Button>
-                    </div>
-                 )}
             </div>
         </DashboardLayout>
     );

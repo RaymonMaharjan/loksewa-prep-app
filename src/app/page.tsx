@@ -13,7 +13,6 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { FileText, FlaskConical, BarChart2, CheckCircle, Star, Award } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 
 const features = [
@@ -97,9 +96,9 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link href="/login">
-                    <Button size="lg">Get Started</Button>
-                  </Link>
+                  <Button asChild size="lg">
+                    <Link href="/login">Get Started Free</Link>
+                  </Button>
                 </div>
               </div>
               <Image
@@ -142,36 +141,78 @@ export default function Home() {
         </section>
 
         <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How It Works</h2>
-                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                            Start your journey to exam success in three simple steps.
-                        </p>
-                    </div>
-                </div>
-                <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
-                    <div className="grid gap-1 text-center">
-                        <div className="flex justify-center items-center mb-4"><span className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground text-xl font-bold">1</span></div>
-                        <h3 className="text-xl font-bold">Sign Up</h3>
-                        <p className="text-muted-foreground">Create your free account in seconds to get started.</p>
-                    </div>
-                    <div className="grid gap-1 text-center">
-                        <div className="flex justify-center items-center mb-4"><span className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground text-xl font-bold">2</span></div>
-                        <h3 className="text-xl font-bold">Practice Smart</h3>
-                        <p className="text-muted-foreground">Use our AI tools to take quizzes and generate study plans.</p>
-                    </div>
-                    <div className="grid gap-1 text-center">
-                        <div className="flex justify-center items-center mb-4"><span className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground text-xl font-bold">3</span></div>
-                        <h3 className="text-xl font-bold">Achieve Success</h3>
-                        <p className="text-muted-foreground">Track your progress and walk into your exam with confidence.</p>
-                    </div>
-                </div>
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How It Works</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Start your journey to exam success in three simple steps.
+                </p>
+              </div>
             </div>
+            <div className="mx-auto grid max-w-5xl gap-12 lg:gap-16 py-12">
+              <div className="grid gap-4 md:grid-cols-2 md:items-center">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary font-medium">Step 1</div>
+                  <h3 className="text-2xl font-bold">Sign Up for Free</h3>
+                  <p className="text-muted-foreground">
+                    Create your account in seconds using Google. It's quick, easy, and secure.
+                  </p>
+                </div>
+                <Card className="overflow-hidden">
+                    <Image
+                      alt="Sign up screenshot"
+                      className="aspect-video w-full object-cover object-center"
+                      height="450"
+                      src="https://placehold.co/800x450.png"
+                      data-ai-hint="app login page"
+                      width="800"
+                    />
+                </Card>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 md:items-center">
+                 <div className="space-y-2 md:order-2">
+                  <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary font-medium">Step 2</div>
+                  <h3 className="text-2xl font-bold">Practice Smart</h3>
+                  <p className="text-muted-foreground">
+                    Take AI-generated quizzes, create custom tests, and get a personalized daily study routine.
+                  </p>
+                </div>
+                <Card className="overflow-hidden md:order-1">
+                    <Image
+                      alt="Practice screenshot"
+                      className="aspect-video w-full object-cover object-center"
+                      height="450"
+                      src="https://placehold.co/800x450.png"
+                      data-ai-hint="dashboard analytics quiz"
+                      width="800"
+                    />
+                </Card>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 md:items-center">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary font-medium">Step 3</div>
+                  <h3 className="text-2xl font-bold">Achieve Success</h3>
+                  <p className="text-muted-foreground">
+                    Track your performance with our detailed analytics and watch your scores improve over time.
+                  </p>
+                </div>
+                <Card className="overflow-hidden">
+                    <Image
+                      alt="Success screenshot"
+                      className="aspect-video w-full object-cover object-center"
+                      height="450"
+                      src="https://placehold.co/800x450.png"
+                      data-ai-hint="charts graphs progress"
+                      width="800"
+                    />
+                </Card>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
@@ -195,16 +236,16 @@ export default function Home() {
                                 <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-500" /> Performance Analytics</li>
                                 <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-500" /> Personalized Study Plans</li>
                             </ul>
-                            <Link href="/login" className="w-full">
-                                <Button className="w-full" size="lg">Sign Up for Free</Button>
-                            </Link>
+                            <Button asChild className="w-full" size="lg">
+                                <Link href="/login">Sign Up for Free</Link>
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>
             </div>
         </section>
 
-        <section id="faq" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+        <section id="faq" className="w-full py-12 md:py-24 lg:py-32">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
@@ -226,7 +267,7 @@ export default function Home() {
             </div>
         </section>
         
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
@@ -237,9 +278,9 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
-               <Link href="/login">
-                  <Button size="lg">Sign Up for Free</Button>
-                </Link>
+               <Button asChild size="lg">
+                  <Link href="/login">Sign Up for Free</Link>
+                </Button>
             </div>
           </div>
         </section>

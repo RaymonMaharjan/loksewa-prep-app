@@ -1,7 +1,7 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import { BookCheck, Loader2, Sparkles } from 'lucide-react';
+import { BookCheck, Loader2, Sparkles, ArrowLeft } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { generateDailyRoutine, type GenerateDailyRoutineOutput } from '@/ai/flow
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Checkbox } from '@/components/ui/checkbox';
+import Link from 'next/link';
 
 const LOCAL_STORAGE_KEY = 'loksewaDailyRoutine';
 
@@ -160,9 +161,14 @@ export default function RoutinePage() {
                 ))}
             </div>
 
-            <div className="text-center pt-4">
+            <div className="text-center pt-4 flex justify-center items-center space-x-4">
                 <Button onClick={handleGenerateNew}>
                     <Sparkles className="mr-2 h-4 w-4" /> Generate a New Routine
+                </Button>
+                <Button variant="outline" asChild>
+                    <Link href="/dashboard">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+                    </Link>
                 </Button>
             </div>
         </div>

@@ -12,7 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { FileText, FlaskConical, BarChart2, CheckCircle, Star, Award } from 'lucide-react';
+import { FileText, FlaskConical, BarChart2, CheckCircle } from 'lucide-react';
 
 
 const features = [
@@ -164,7 +164,7 @@ export default function Home() {
                       alt="Sign up screenshot"
                       className="aspect-video w-full object-cover object-center"
                       height="450"
-                      src="https://placehold.co/800x450.png"
+                      src="/Screenshot 2025-07-12 200252.png"
                       data-ai-hint="app login page"
                       width="800"
                     />
@@ -183,7 +183,7 @@ export default function Home() {
                       alt="Practice screenshot"
                       className="aspect-video w-full object-cover object-center"
                       height="450"
-                      src="https://placehold.co/800x450.png"
+                      src="/Screenshot 2025-07-12 200511.png"
                       data-ai-hint="dashboard analytics quiz"
                       width="800"
                     />
@@ -202,7 +202,7 @@ export default function Home() {
                       alt="Success screenshot"
                       className="aspect-video w-full object-cover object-center"
                       height="450"
-                      src="https://placehold.co/800x450.png"
+                      src="/Screenshot 2025-07-12 201133.png"
                       data-ai-hint="charts graphs progress"
                       width="800"
                     />

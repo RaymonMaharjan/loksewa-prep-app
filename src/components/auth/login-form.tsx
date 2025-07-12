@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Loader2, Download } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +17,7 @@ import {
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import LoksewaLogo from '@/components/icons/loksewa-logo';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -82,7 +82,7 @@ export function LoginPageContent() {
         <main className="flex-1 flex flex-col items-center justify-center p-8">
           <Card className="w-full max-w-sm">
             <CardHeader className="text-center">
-              <Image src="/icons/logo.svg" alt="Loksewa Prep Logo" width={64} height={64} className="w-16 h-16 mx-auto text-primary" />
+              <LoksewaLogo className="w-16 h-16 mx-auto text-primary" />
               <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
               <CardDescription>Sign in to start your preparation journey.</CardDescription>
             </CardHeader>

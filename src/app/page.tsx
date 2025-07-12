@@ -24,7 +24,7 @@ export default function Page() {
         <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('https://placehold.co/600x400.png')",
+              backgroundImage: "url('/login-background.jpg')",
             }}
             data-ai-hint="futuristic tech abstract"
         >

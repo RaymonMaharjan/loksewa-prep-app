@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   description: 'Your partner in Loksewa exam preparation.',
   manifest: '/manifest.json',
   icons: {
-    icon: '/logo.svg',
-    apple: '/logo.svg',
+    icon: '/icons/logo.svg',
+    apple: '/icons/logo.svg',
   },
   applicationName: 'Loksewa Prep',
   appleWebApp: {

@@ -17,7 +17,7 @@ import {
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import Image from 'next/image';
+import LoksewaLogo from '@/components/icons/loksewa-logo';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -82,7 +82,7 @@ export function LoginPageContent() {
         <main className="flex-1 flex flex-col items-center justify-center p-8">
           <Card className="w-full max-w-sm">
             <CardHeader className="text-center">
-              <Image src="/icons/logo.svg" alt="Loksewa Prep Logo" width={64} height={64} className="mx-auto" />
+              <LoksewaLogo className="mx-auto h-16 w-16 text-primary" />
               <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
               <CardDescription>Sign in to start your preparation journey.</CardDescription>
             </CardHeader>

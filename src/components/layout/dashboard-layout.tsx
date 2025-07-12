@@ -32,6 +32,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -108,10 +109,11 @@ const UserProfileMenu = () => {
     )
 }
 
-export function DashboardLayout({ children }: { children: React.ReactNode }) {
+function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+  const { user, loading, signOut } = useAuth();
   const router = useRouter();
-  const { user, loading } = useAuth();
 
   React.useEffect(() => {
     if (!loading && !user) {
@@ -127,8 +129,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  };
+  
   return (
-    <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2">
@@ -146,6 +151,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                   asChild
                   isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
+                  onClick={handleLinkClick}
                 >
                   <Link href={item.href}>
                     <item.icon />
@@ -173,6 +179,30 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </header>
         <main className="flex-1 p-4 md:p-6">{children}</main>
       </SidebarInset>
+  )
+}
+
+export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+  
+  if (loading || !user) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </SidebarProvider>
   );
 }

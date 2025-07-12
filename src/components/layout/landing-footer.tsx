@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import LoksewaLogo from '@/components/icons/loksewa-logo';
+import Image from 'next/image';
 
 const footerLinks = [
     {
@@ -24,7 +24,7 @@ export function LandingFooter() {
       <div className="container flex flex-col items-center justify-between gap-6 sm:flex-row">
         <div className="flex flex-col items-center sm:items-start">
             <div className="flex items-center gap-2 mb-2">
-                <LoksewaLogo className="w-6 h-6" />
+                <Image src="/icons/logo.svg" alt="Loksewa Prep Logo" width={24} height={24} />
                 <span className="font-bold">Loksewa Prep</span>
             </div>
             <p className="text-xs text-muted-foreground">

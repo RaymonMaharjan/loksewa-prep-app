@@ -1,4 +1,4 @@
-import Logo from '../../../public/icons/logo.svg';
+import Logo from '@/assets/icons/logo.svg';
 
 const LoksewaLogo = ({...props}) => <Logo {...props} />;
 

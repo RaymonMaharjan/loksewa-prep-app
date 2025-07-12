@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLoksewa } from '@/hooks/use-loksewa';
+import Link from 'next/link';
 
 type Question = GenerateCustomTestOutput['questions'][0];
 
@@ -175,8 +176,9 @@ export default function MockTestPage() {
                   })}
                 </div>
               </ScrollArea>
-               <div className="mt-6 text-center">
+               <div className="mt-6 text-center space-x-4">
                   <Button onClick={handleStartQuiz}>Try Another Mock Test</Button>
+                  <Button variant="outline" asChild><Link href="/dashboard">Go to Dashboard</Link></Button>
               </div>
           </CardContent>
       </Card>
@@ -235,3 +237,5 @@ export default function MockTestPage() {
     </DashboardLayout>
   );
 }
+
+    

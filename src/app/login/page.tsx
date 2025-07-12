@@ -23,7 +23,7 @@ export default function LoginPage() {
         <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('/login-background.jpg')",
+              backgroundImage: "url('/loginloadingimg.png')",
             }}
             data-ai-hint="futuristic tech abstract"
         >

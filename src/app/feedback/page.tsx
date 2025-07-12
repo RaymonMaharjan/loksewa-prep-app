@@ -9,13 +9,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Send } from 'lucide-react';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuth } from '@/contexts/auth-context';
 
 export default function FeedbackPage() {
     const { toast } = useToast();
+    const { user } = useAuth();
     const [feedback, setFeedback] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!feedback.trim()) {
             toast({
@@ -26,17 +30,41 @@ export default function FeedbackPage() {
             return;
         }
 
+        if (!user) {
+             toast({
+                title: 'Not authenticated',
+                description: 'You must be logged in to submit feedback.',
+                variant: 'destructive',
+            });
+            return;
+        }
+
         setIsLoading(true);
 
-        // Simulate an API call
-        setTimeout(() => {
-            setIsLoading(false);
+        try {
+            await addDoc(collection(db, "feedback"), {
+                text: feedback,
+                userId: user.uid,
+                userEmail: user.email,
+                userName: user.displayName,
+                createdAt: serverTimestamp(),
+            });
+
             setFeedback('');
             toast({
                 title: 'Feedback Sent!',
                 description: "Thank you for your valuable input. We'll use it to make the app better.",
             });
-        }, 1000);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+             toast({
+                title: 'Error',
+                description: 'There was an issue sending your feedback. Please try again.',
+                variant: 'destructive',
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -62,6 +90,7 @@ export default function FeedbackPage() {
                                     onChange={(e) => setFeedback(e.target.value)}
                                     rows={8}
                                     required
+                                    disabled={isLoading}
                                 />
                             </div>
                             <Button type="submit" className="w-full" disabled={isLoading}>

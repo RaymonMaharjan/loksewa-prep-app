@@ -16,6 +16,7 @@ import {
   LogOut,
   Loader2,
   Menu,
+  BookCheck,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -44,6 +45,7 @@ import { LoksewaLogo } from '../icons/loksewa-logo';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/routine', label: 'Routine', icon: BookCheck },
   { href: '/daily-quiz', label: 'Daily Quiz', icon: Calendar },
   { href: '/mock-test', label: 'Mock Test', icon: FileText },
   { href: '/custom-test', label: 'Custom Test', icon: FlaskConical },

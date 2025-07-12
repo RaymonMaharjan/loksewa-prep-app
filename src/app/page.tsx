@@ -86,7 +86,7 @@ export default function Home() {
                 </div>
               </div>
               <Image
-                src="/login-background.jpg"
+                src="/dbeb6909-b451-42f7-ab29-c91b62e6134d.png"
                 width="600"
                 height="400"
                 alt="Hero"

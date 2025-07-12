@@ -19,6 +19,7 @@ import {
   Menu,
   BookCheck,
   Globe,
+  MessageSquare,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -53,6 +54,7 @@ const menuItems = [
   { href: '/study-plan', label: 'Study Plan', icon: Wand },
   { href: '/gk-iq', label: 'GK & IQ', icon: Globe },
   { href: '/performance', label: 'Performance', icon: BarChart2 },
+  { href: '/feedback', label: 'Feedback', icon: MessageSquare },
 ];
 
 const UserProfileMenu = () => {
@@ -130,7 +132,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={40} height={40} />
+            <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={40} height={40} className="[filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">Loksewa Prep</h2>
             </div>

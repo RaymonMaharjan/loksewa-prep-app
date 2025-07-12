@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('https://placehold.co/1920x1080.png')",
+              backgroundImage: "url('https://placehold.co/600x400.png')",
             }}
             data-ai-hint="futuristic tech abstract"
         >

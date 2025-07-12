@@ -32,7 +32,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
-  useSidebar,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -111,8 +110,7 @@ const UserProfileMenu = () => {
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { setOpenMobile } = useSidebar();
-  const { user, loading, signOut } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
@@ -129,10 +127,6 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const handleLinkClick = () => {
-    setOpenMobile(false);
-  };
-  
   return (
       <Sidebar>
         <SidebarHeader>
@@ -151,7 +145,6 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                   asChild
                   isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
-                  onClick={handleLinkClick}
                 >
                   <Link href={item.href}>
                     <item.icon />

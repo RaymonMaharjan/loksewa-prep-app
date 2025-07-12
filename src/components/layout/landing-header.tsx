@@ -10,7 +10,6 @@ import { ModeToggle } from './mode-toggle';
 const navLinks = [
   { href: '#features', label: 'Features' },
   { href: '#how-it-works', label: 'How It Works' },
-  { href: '#testimonials', label: 'Testimonials' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#faq', label: 'FAQ' },
 ];
@@ -19,7 +18,7 @@ export function LandingHeader() {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
       <Link href="/" className="flex items-center justify-center mr-auto">
-        <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={40} height={40} className="mr-2" />
+        <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={32} height={32} className="mr-2" />
         <span className="font-bold">Loksewa Prep</span>
       </Link>
       <nav className="ml-auto hidden gap-4 sm:gap-6 lg:flex">
@@ -51,7 +50,7 @@ export function LandingHeader() {
             <SheetContent side="left">
               <div className="grid gap-4 p-4">
                 <Link href="/" className="flex items-center justify-center mb-4">
-                    <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={40} height={40} className="mr-2" />
+                    <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={32} height={32} className="mr-2" />
                     <span className="font-bold">Loksewa Prep</span>
                 </Link>
                 <div className="flex flex-col gap-4">

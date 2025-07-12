@@ -34,21 +34,6 @@ const features = [
   },
 ];
 
-const testimonials = [
-    {
-        quote: "This app has been a game-changer for my Loksewa preparation. The AI-generated quizzes are incredibly helpful for practice.",
-        name: "Sunita Sharma",
-        title: "Aspiring IT Officer",
-        avatar: "https://placehold.co/100x100.png"
-    },
-    {
-        quote: "I can focus on my weak subjects with custom tests. My confidence has skyrocketed since I started using this platform.",
-        name: "Ramesh Karki",
-        title: "Student",
-        avatar: "https://placehold.co/100x100.png"
-    }
-];
-
 const faqs = [
     {
         question: "Is this platform completely free?",
@@ -86,7 +71,7 @@ export default function Home() {
         >
             <div className="absolute inset-0 bg-background/60 z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4" />
+                <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4 [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
                 <p className="mt-4 text-lg text-foreground">Loading your experience...</p>
             </div>
@@ -186,35 +171,6 @@ export default function Home() {
             </div>
         </section>
 
-        <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-            <div className="container px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What Our Users Say</h2>
-                    </div>
-                </div>
-                <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 mt-12">
-                    {testimonials.map((testimonial, index) => (
-                        <Card key={index} className="bg-background">
-                            <CardContent className="p-6">
-                                <p className="mb-4 text-muted-foreground">"{testimonial.quote}"</p>
-                                <div className="flex items-center gap-4">
-                                    <Avatar>
-                                        <AvatarImage src={testimonial.avatar} data-ai-hint="person face" />
-                                        <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold">{testimonial.name}</p>
-                                        <p className="text-sm text-muted-foreground">{testimonial.title}</p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
-        
         <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
             <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">

@@ -8,6 +8,7 @@ import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useLoksewa } from '@/hooks/use-loksewa';
 import { useMemo } from 'react';
+import AdBanner from '@/components/ads/ad-banner';
 
 
 const quickLinks = [
@@ -66,6 +67,12 @@ export default function DashboardPage() {
           <h1 className="text-2xl md:text-3xl font-bold">Welcome back!</h1>
           <p className="text-muted-foreground">Here's a quick overview of your prep status.</p>
         </div>
+
+        <AdBanner
+          data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+          data-ad-slot="YOUR_AD_SLOT_ID"
+        />
+
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {quickLinks.map((link) => (
             <Card 

@@ -71,6 +71,8 @@ ${gkSyllabus}
 
 You will generate a quiz with the specified number of questions based on the user-selected topics.
 
+CRITICAL INSTRUCTION: You MUST ensure that every single question and, most importantly, the 'correctAnswer' are factually accurate and verifiable. Double-check all dates, names, figures, and historical events. Do not provide information that is speculative or incorrect. Your primary goal is accuracy.
+
 When a user selects a main topic, you must GO DEEP into that topic by creating questions from its specific sub-topics listed in the syllabus above. Generate specific, high-quality multiple-choice questions. Ensure each question has four plausible options and one correct answer. Each time this prompt is called, you must generate a new and unique set of questions.
 
 Whenever a question or answer contains a date, you MUST provide it in both Bikram Sambat (B.S.) and Anno Domini (A.D.) formats (e.g., "2079 B.S. (2023 A.D.)").

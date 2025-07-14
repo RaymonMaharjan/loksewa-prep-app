@@ -44,6 +44,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useAuth } from '@/contexts/auth-context';
+import { useToast } from '@/hooks/use-toast';
+import { differenceInMinutes, addMinutes } from 'date-fns';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -56,6 +58,10 @@ const menuItems = [
   { href: '/performance', label: 'Performance', icon: BarChart2 },
   { href: '/feedback', label: 'Feedback', icon: MessageSquare },
 ];
+
+const QUIZ_COOLDOWN_MINUTES = 24 * 60; // 24 hours
+const LOCAL_STORAGE_KEY = 'loksewaDailyQuizLastTaken';
+const NOTIFICATION_SHOWN_KEY = 'dailyQuizNotificationShown';
 
 const UserProfileMenu = () => {
     const { user, signOut } = useAuth();
@@ -112,6 +118,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   React.useEffect(() => {
     if (!loading && !user) {
@@ -119,6 +126,41 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, [user, loading, router]);
   
+  React.useEffect(() => {
+    if (user) {
+        const notificationShown = sessionStorage.getItem(NOTIFICATION_SHOWN_KEY);
+        if (notificationShown) {
+            return;
+        }
+
+        const lastTakenStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+        let isAvailable = true;
+
+        if (lastTakenStr) {
+            const lastTakenDate = new Date(lastTakenStr);
+            const now = new Date();
+            const minutesSinceLastTaken = differenceInMinutes(now, lastTakenDate);
+            if (minutesSinceLastTaken < QUIZ_COOLDOWN_MINUTES) {
+                isAvailable = false;
+            }
+        }
+        
+        if (isAvailable) {
+            toast({
+                title: 'Daily Quiz Available!',
+                description: "Your daily quiz is ready. Test your knowledge now.",
+                action: (
+                    <Button asChild variant="secondary" size="sm">
+                        <Link href="/daily-quiz">Take Quiz</Link>
+                    </Button>
+                ),
+            });
+            sessionStorage.setItem(NOTIFICATION_SHOWN_KEY, 'true');
+        }
+    }
+  }, [user, toast]);
+
+
   if (loading || !user) {
     return (
       <div className="flex h-screen w-screen items-center justify-center">
@@ -174,7 +216,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
         <main className="flex-1 p-4 md:p-6">{children}</main>
       </SidebarInset>
     </>
-  )
+  );
 }
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

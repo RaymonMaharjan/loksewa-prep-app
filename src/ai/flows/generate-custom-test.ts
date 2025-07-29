@@ -201,7 +201,7 @@ const prompt = ai.definePrompt({
   name: 'generateCustomTestPrompt',
   input: {schema: GenerateCustomTestInputSchema},
   output: {schema: GenerateCustomTestOutputSchema},
-  prompt: `You are an expert in generating custom tests for students preparing for Loksewa exams, specializing in computer science and IT. Your knowledge is based on the following comprehensive syllabus. You should also use indiabix.com as a reference for question style and quality.
+  prompt: `You are an expert in generating custom tests for students preparing for Loksewa exams, specializing in computer science and IT. Your knowledge is based on the following comprehensive syllabus.
 
 Full Syllabus:
 ${fullSyllabus}

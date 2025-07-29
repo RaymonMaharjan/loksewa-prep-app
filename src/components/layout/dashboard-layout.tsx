@@ -174,7 +174,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Image src="/icon_512x512.png" alt="Loksewa Prep Logo" width={32} height={32} />
+            <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={32} height={32} />
             <span className="font-bold text-lg group-data-[collapsible=icon]:hidden">Loksewa Prep</span>
           </Link>
         </SidebarHeader>

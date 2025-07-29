@@ -29,7 +29,7 @@ export default function LoginPage() {
         >
             <div className="absolute inset-0 bg-background/60 z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4" />
+                <Image src="/icons/Landscape 1.jpg" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4" />
                 <h1 className="text-2xl font-bold text-foreground">Loksewa Prep</h1>
                 <Loader2 className="mt-4 h-8 w-8 animate-spin text-primary" />
             </div>

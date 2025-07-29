@@ -24,7 +24,7 @@ export function LandingFooter() {
       <div className="container flex flex-col items-center justify-between gap-6 sm:flex-row">
         <div className="flex flex-col items-center sm:items-start">
             <div className="flex items-center gap-2 mb-2">
-                <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={24} height={24} />
+                <Image src="/icons/Landscape 1.jpg" alt="Loksewa Prep Logo" width={24} height={24} />
                 <span className="font-bold">Loksewa Prep</span>
             </div>
             <p className="text-xs text-muted-foreground">

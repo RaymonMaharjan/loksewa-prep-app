@@ -25,7 +25,7 @@ export function LandingHeader() {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
       <Link href="/" className="flex items-center justify-center mr-auto">
-        <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={32} height={32} />
+        <Image src="/icons/Landscape 1.jpg" alt="Loksewa Prep Logo" width={32} height={32} />
         <span className="sr-only">Loksewa Prep</span>
       </Link>
       <nav className="ml-auto hidden gap-4 sm:gap-6 lg:flex">
@@ -57,7 +57,7 @@ export function LandingHeader() {
             <SheetContent side="left">
               <div className="grid gap-4 p-4">
                 <Link href="/" onClick={handleLinkClick} className="flex items-center justify-center mb-4">
-                    <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={40} height={40} />
+                    <Image src="/icons/Landscape 1.jpg" alt="Loksewa Prep Logo" width={40} height={40} />
                     <span className="font-bold">Loksewa Prep</span>
                 </Link>
                 <div className="flex flex-col gap-4">

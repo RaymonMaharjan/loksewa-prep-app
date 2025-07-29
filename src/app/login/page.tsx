@@ -23,13 +23,13 @@ export default function LoginPage() {
         <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('/loginloadingimg.png')",
+              backgroundImage: "url('/landscape_1.jpg')",
             }}
             data-ai-hint="futuristic tech abstract"
         >
             <div className="absolute inset-0 bg-background/60 z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4" />
+                <Image src="/icon_512x512.png" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4" />
                 <h1 className="text-2xl font-bold text-foreground">Loksewa Prep</h1>
                 <Loader2 className="mt-4 h-8 w-8 animate-spin text-primary" />
             </div>

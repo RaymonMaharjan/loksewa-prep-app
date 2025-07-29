@@ -8,12 +8,12 @@
   "theme_color": "#2C3E50",
   "icons": [
     {
-      "src": "/icons/loksewa_prep_logo_192x192.png",
+      "src": "/icons/512x512.jpg",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icons/loksewa_prep_logo_512x512.png",
+      "src": "/icons/512x512.jpg",
       "sizes": "512x512",
       "type": "image/png"
     }

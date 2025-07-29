@@ -70,7 +70,7 @@ export default function Home() {
         >
             <div className="absolute inset-0 bg-background/60 z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                <Image src="/icons/Landscape 1.jpg" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4 [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
+                <Image src="/icons/512x512.jpg" alt="Loksewa Prep Logo" width={80} height={80} className="mb-4 [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
                 <h1 className="text-2xl font-bold text-foreground">Loksewa Prep</h1>
                 <Loader2 className="mt-4 h-8 w-8 animate-spin text-primary" />
             </div>
@@ -102,7 +102,7 @@ export default function Home() {
                 </div>
               </div>
               <Image
-                src="/dbeb6909-b451-42f7-ab29-c91b62e6134d.png"
+                src="/landscape_1.jpg"
                 width="600"
                 height="400"
                 alt="Hero"

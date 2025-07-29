@@ -64,7 +64,7 @@ export default function Home() {
          <div 
             className="relative flex h-screen w-screen flex-col items-center justify-center bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('/login-background.jpg')",
+              backgroundImage: "url('/ChatGPT Image Jul 29, 2025, 01_52_30 PM.png')",
             }}
             data-ai-hint="futuristic tech abstract"
         >
@@ -164,7 +164,7 @@ export default function Home() {
                       alt="Sign up screenshot"
                       className="aspect-video w-full object-cover object-center"
                       height="450"
-                      src="/Screenshot 2025-07-12 200252.png"
+                      src="/Screenshot 2025-07-29 140845.png"
                       data-ai-hint="app login page"
                       width="800"
                     />

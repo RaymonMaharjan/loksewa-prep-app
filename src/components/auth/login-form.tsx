@@ -82,7 +82,7 @@ export function LoginPageContent() {
         <main className="flex-1 flex flex-col items-center justify-center p-8">
           <Card className="w-full max-w-sm">
             <CardHeader className="text-center">
-              <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={64} height={64} className="mx-auto [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
+              <Image src="/icons/loksewa_prep_logo_512x512.png" alt="Loksewa Prep Logo" width={80} height={80} className="mx-auto [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.1))]" />
               <CardTitle className="mt-4 text-2xl">Loksewa Prep</CardTitle>
               <CardDescription>Sign in to start your preparation journey.</CardDescription>
             </CardHeader>

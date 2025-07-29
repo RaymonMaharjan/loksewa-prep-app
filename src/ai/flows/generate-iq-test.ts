@@ -88,7 +88,7 @@ const prompt = ai.definePrompt({
   name: 'generateIqTestPrompt',
   input: {schema: GenerateIqTestInputSchema},
   output: {schema: GenerateIqTestOutputSchema},
-  prompt: `You are an expert in generating IQ (General Reasoning Test) quizzes based on the following syllabus.
+  prompt: `You are an expert in generating IQ (General Reasoning Test) quizzes based on the following syllabus. You should also use indiabix.com as a reference for question style and quality.
 
 Syllabus:
 ${iqSyllabus}

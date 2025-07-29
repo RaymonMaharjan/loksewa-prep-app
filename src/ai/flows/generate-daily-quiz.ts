@@ -197,7 +197,7 @@ const generateDailyQuizPrompt = ai.definePrompt({
   name: 'generateDailyQuizPrompt',
   input: {schema: GenerateDailyQuizInputSchema},
   output: {schema: GenerateDailyQuizOutputSchema},
-  prompt: `You are an expert quiz generator for students preparing for Loksewa exams. Your knowledge is based on the following comprehensive syllabus:
+  prompt: `You are an expert quiz generator for students preparing for Loksewa exams. Your knowledge is based on the following comprehensive syllabus. You should also use indiabix.com as a reference for question style and quality.
 
 Full Syllabus:
 ${fullSyllabus}

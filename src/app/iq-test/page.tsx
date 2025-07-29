@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useLoksewa } from '@/hooks/use-loksewa';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Question = GenerateIqTestOutput['questions'][0];
 
@@ -176,7 +177,7 @@ export default function IqTestPage() {
                 <div className="flex flex-col items-center justify-center h-full text-center p-4">
                     <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
                     <h2 className="text-2xl font-semibold mb-2">Generating Your IQ Test</h2>
-                    <p className="text-muted-foreground">The AI is crafting your personalized questions. This may take a moment.</p>
+                    <p className="text-muted-foreground">The AI is crafting your personalized questions. This may take a moment, especially if images are being generated.</p>
                 </div>
             </DashboardLayout>
         );
@@ -229,6 +230,11 @@ export default function IqTestPage() {
                                         const isCorrect = userAnswer === q.correctAnswer;
                                         return (
                                             <div key={index} className={cn("p-4 rounded-lg border", userAnswer ? (isCorrect ? "border-green-500 bg-green-500/10" : "border-red-500 bg-red-500/10") : "bg-muted/50")}>
+                                                {q.imageUrl && (
+                                                    <div className="mb-4 flex items-center justify-center bg-muted rounded-md p-2">
+                                                        <Image src={q.imageUrl} alt="Question visual" width={400} height={200} className="rounded-md object-contain" />
+                                                    </div>
+                                                )}
                                                 <p className="font-semibold">{index + 1}. {q.question}</p>
                                                 <p className="text-sm mt-2">Your answer: <span className={cn("font-medium", userAnswer ? (isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400") : "text-muted-foreground")}>{userAnswer || "Not answered"}</span></p>
                                                 <p className="text-sm">Correct answer: <span className="font-medium text-green-700 dark:text-green-400">{q.correctAnswer}</span></p>
@@ -260,7 +266,7 @@ export default function IqTestPage() {
                         </div>
                         <Alert>
                            <AlertDescription>
-                            This test is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Good luck!
+                            This test is timed and includes negative marking of {NEGATIVE_MARKING_PER_QUESTION} for each incorrect answer. Spatial questions may include images. Good luck!
                            </AlertDescription>
                         </Alert>
                     </div>
@@ -268,6 +274,11 @@ export default function IqTestPage() {
                     {generatedTest.questions.map((q, index) => (
                         <Card key={index}>
                             <CardHeader>
+                                {q.imageUrl && (
+                                    <div className="mb-4 flex items-center justify-center bg-muted rounded-md p-2">
+                                        <Image src={q.imageUrl} alt="Question visual" width={500} height={250} className="rounded-md object-contain" />
+                                    </div>
+                                )}
                                 <CardTitle>Question {index + 1}</CardTitle>
                                 <CardDescription className="text-base md:text-lg pt-2">{q.question}</CardDescription>
                             </CardHeader>

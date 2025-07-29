@@ -74,6 +74,7 @@ const GenerateIqTestOutputSchema = z.object({
       options: z.array(z.string()).describe('The possible answer options.'),
       correctAnswer: z.string().describe('The correct answer to the question.'),
       topic: z.string().describe('The main topic of the question.'),
+      imageUrl: z.string().optional().describe('An optional URL for a generated image, provided as a data URI.'),
     })
   ).describe('An array of questions for the IQ test.'),
 });
@@ -94,7 +95,9 @@ ${iqSyllabus}
 
 You will generate a quiz with the specified number of questions based on the user-selected topics.
 
-When a user selects a main topic (e.g., "Logical Reasoning"), you must create questions from its specific sub-topics. For Spatial Reasoning questions that rely on visuals, describe the figures and options clearly in text. For example: "Which of the following figures completes the series: [Description of Figure 1], [Description of Figure 2], ___?"
+When a user selects a main topic (e.g., "Logical Reasoning"), you must create questions from its specific sub-topics. 
+
+For Spatial Reasoning questions that rely on visuals, you MUST describe the visual elements of the question in detail within the 'question' field. For example: "A sequence of figures is shown. The first figure is a square with a dot in the top-left corner. The second figure is a square with a dot in the top-right corner. The third is a square with a dot in the bottom-right corner. What is the next figure in the sequence?". This description will be used to generate an image.
 
 Generate specific, high-quality multiple-choice questions. Ensure each question has four plausible options and one correct answer. Each time this prompt is called, you must generate a new and unique set of questions.
 
@@ -116,7 +119,40 @@ const generateIqTestFlow = ai.defineFlow(
     outputSchema: GenerateIqTestOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    // First, generate the text-based questions from the syllabus
+    const {output: textOutput} = await prompt(input);
+
+    if (!textOutput) {
+        throw new Error('Failed to generate IQ test questions.');
+    }
+
+    // Now, for each spatial reasoning question, generate an image
+    const processedQuestions = await Promise.all(
+        textOutput.questions.map(async (q) => {
+            if (q.topic === 'Spatial Reasoning') {
+                try {
+                    const imagePrompt = `Generate a clear, minimalist, black and white diagram for the following spatial reasoning question. The image should visually represent the core logic of the puzzle described. Do not include any text, letters, or numbers in the image itself. Description: ${q.question}`;
+                    const {media} = await ai.generate({
+                        model: 'googleai/gemini-2.0-flash-preview-image-generation',
+                        prompt: imagePrompt,
+                        config: {
+                            responseModalities: ['TEXT', 'IMAGE'],
+                        },
+                    });
+
+                    if (media?.url) {
+                        return { ...q, imageUrl: media.url };
+                    }
+                } catch (error) {
+                    console.error("Image generation failed for a question, proceeding without image.", error);
+                    // Return the question without an image if generation fails
+                    return q;
+                }
+            }
+            return q;
+        })
+    );
+
+    return { questions: processedQuestions };
   }
 );

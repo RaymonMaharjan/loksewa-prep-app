@@ -120,15 +120,15 @@ const generateIqTestFlow = ai.defineFlow(
   },
   async input => {
     // First, generate the text-based questions from the syllabus
-    const {output: textOutput} = await prompt(input);
+    const {output} = await prompt(input);
 
-    if (!textOutput) {
+    if (!output?.questions) {
         throw new Error('Failed to generate IQ test questions.');
     }
 
     // Now, for each spatial reasoning question, generate an image
     const processedQuestions = await Promise.all(
-        textOutput.questions.map(async (q) => {
+        output.questions.map(async (q) => {
             if (q.topic === 'Spatial Reasoning') {
                 try {
                     const imagePrompt = `Generate a clear, minimalist, black and white diagram for the following spatial reasoning question. The image should visually represent the core logic of the puzzle described. Do not include any text, letters, or numbers in the image itself. Description: ${q.question}`;

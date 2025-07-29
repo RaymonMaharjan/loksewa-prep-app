@@ -16,9 +16,9 @@ const sections = [
     { 
       title: 'IQ Test', 
       icon: BrainCircuit, 
-      path: '#', 
-      description: "Sharpen your logical and analytical skills. (Coming Soon)",
-      enabled: false 
+      path: '/iq-test', 
+      description: "Sharpen your logical and analytical skills.",
+      enabled: true 
     },
 ];
 

@@ -10,7 +10,7 @@ export interface TestResult {
   date: string;
   score: number;
   totalQuestions: number;
-  type: 'daily-quiz' | 'mock-test' | 'custom-test';
+  type: 'daily-quiz' | 'mock-test' | 'custom-test' | 'iq-test';
   topics: string[];
 }
 
